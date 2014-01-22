@@ -1,10 +1,10 @@
+{% from "dhcpd/map.jinja" import dhcpd with context %}
+
 dhcpd:
   pkg.installed:
-    {% if grains['os_family'] == 'Debian' %}
-    - name: isc-dhcp-server
-    {% else %}
-    - name: dhcp
+    - name: {{ dhcpd.server }}
   service.running:
+    - name: {{ dhcpd.service }}
     - enable: True
     - require:
       - pkg: dhcpd
