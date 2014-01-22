@@ -1,0 +1,8 @@
+{% set dhcpd = salt['grains.filter_by']({
+    'Debian': {
+        'server': 'isc-dhcp-server',
+    },
+    'RedHat': {
+        'server': 'dhcp',
+    },
+}, merge=salt['pillar.get']('dhcpd:lookup')) %}
