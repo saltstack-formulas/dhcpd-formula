@@ -11,6 +11,9 @@ Formulas to install and start dhcpd.
 Available states
 ================
 
+.. contents::
+    :local:
+
 ``dhcpd``
 ---------
 
