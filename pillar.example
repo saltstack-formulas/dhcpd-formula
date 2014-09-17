@@ -1,14 +1,13 @@
 dhcpd:
-    domain-name: example.org
-    domain-name-servers:
+    domain_name: example.org
+    domain_name_servers:
         - ns1.example.org
         - ns2.example.org
-    default-lease-time: 600
-    max-lease-time: 7200
-    log-facility: local7
+    default_lease_time: 600
+    max_lease_time: 7200
+    log_facility: local7
     subnets:
         10.152.187.0:
-            # TODO: Make sure multi-line comments work correctly
             comment: |
                 No service will be given on this subnet, but declaring it helps the
                 DHCP server to understand the network topology.
@@ -17,7 +16,9 @@ dhcpd:
         10.254.239.0:
             comment: This is a very basic subnet declaration. 
             netmask: 255.255.255.224
-            range: 10.254.239.10 10.254.239.20
+            range: 
+                - 10.254.239.10 
+                - 10.254.239.20
             routers: 
                 - rtr-239-0-1.example.org
                 - rtr-239-0-2.example.org
@@ -27,23 +28,26 @@ dhcpd:
                 This declaration allows BOOTP clients to get dynamic addresses, 
                 which we don't really recommend.
             netmask: 255.255.255.224
-            dynamic-bootp: True
-            range: 10.254.239.40 10.254.239.60
-            broadcast-address: 10.254.239.31
-            # TODO: check if routers is a list or just a string
+            dynamic_bootp: True
+            range:
+                - 10.254.239.40
+                - 10.254.239.60
+            broadcast_address: 10.254.239.31
             routers: rtr-239-32-1.example.org
 
         10.5.5.0:
             comment: A slightly different configuration for an internal subnet.
             netmask: 255.255.255.224
-            range: 10.5.5.26 10.5.5.30
-            domain-name-servers: ns1.internal.example.org
-            domain-name: internal.example.org
+            range: 
+                - 10.5.5.26 
+                - 10.5.5.30
+            domain_name_servers: ns1.internal.example.org
+            domain_name: internal.example.org
             routers:
                 - 10.5.5.1
-            broadcast-address: 10.5.5.31
-            default-lease-time: 600
-            max-lease-time: 7200
+            broadcast_address: 10.5.5.31
+            default_lease_time: 600
+            max_lease_time: 7200
 
     # End of subnets
 
@@ -57,7 +61,7 @@ dhcpd:
             # TODO: Come up with something more YAML-friendly than colon-separated hex
             hardware: ethernet 0:0:c0:5d:bd:95
             filename: vmunix.passacaglia
-            server-name: toccata.fugue.com
+            server_name: toccata.fugue.com
 
         fantasia:
             comment: |
@@ -69,7 +73,7 @@ dhcpd:
                 to which a BOOTP client is connected which has the dynamic-bootp flag
                 set.
             hardware: ethernet 08:00:07:26:c0:a5
-            fixed-address: fantasia.fugue.com
+            fixed_address: fantasia.fugue.com
 
     classes:
         foo:
@@ -78,10 +82,10 @@ dhcpd:
                 based on that.   The example below shows a case where all clients
                 in a certain class get addresses on the 10.17.224/24 subnet, and all
                 other clients get addresses on the 10.0.29/24 subnet.
-            # TODO: this probably won't work either...
+            # I'm suprised this works...
             match: if substring (option vendor-class-identifier, 0, 4) = "SUNW"
 
-    shared-networks:
+    shared_networks:
         224-29:
             subnets:
                 10.17.224.0:
@@ -93,6 +97,10 @@ dhcpd:
             pools:
                 # TODO: Check wether the quotation marks get stripped
                 - allow: members of "foo"
-                  range: 10.17.224.10 10.17.224.250
+                  range: 
+                    - 10.17.224.10
+                    - 10.17.224.250
                 - deny: members of "foo"
-                  range: 10.0.29.10 10.0.29.230
+                  range: 
+                    - 10.0.29.10 
+                    - 10.0.29.230
