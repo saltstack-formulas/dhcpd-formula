@@ -58,7 +58,7 @@ dhcpd:
                 host statements.   If no address is specified, the address will be 
                 allocated dynamically (if possible), but the host-specific information
                 will still come from the host declaration. 
-            # TODO: Come up with something more YAML-friendly than colon-separated hex
+            # We're lucky we don't need the MAC as a key...
             hardware: ethernet 0:0:c0:5d:bd:95
             filename: vmunix.passacaglia
             server_name: toccata.fugue.com
@@ -95,7 +95,7 @@ dhcpd:
                     netmask: 255.255.255.0
                     routers: rtr-29.example.org
             pools:
-                # TODO: Check wether the quotation marks get stripped
+                # And no, those quotation marks won't get stripped:
                 - allow: members of "foo"
                   range: 
                     - 10.17.224.10
