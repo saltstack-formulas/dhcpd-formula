@@ -8,6 +8,7 @@ dhcpd:
     log-facility: local7
     subnets:
         10.152.187.0:
+            # TODO: Make sure multi-line comments work correctly
             comment: |
                 No service will be given on this subnet, but declaring it helps the
                 DHCP server to understand the network topology.
