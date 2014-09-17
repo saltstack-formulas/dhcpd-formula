@@ -1,7 +1,7 @@
 dhcpd
 =====
 
-Formulas to install and start dhcpd.
+Formula to install, configure and start dhcpd.
 
 .. note::
 
@@ -17,4 +17,6 @@ Available states
 ``dhcpd``
 ---------
 
-Install and turn on a basic dhcpd daemon.
+Install, configure and turn on a basic dhcpd daemon.
+See ``pillar.example`` for pillar-data for a sample
+configuration.
