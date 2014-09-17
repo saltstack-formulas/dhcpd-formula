@@ -9,8 +9,9 @@ dhcpd:
     - require:
       - pkg: dhcpd
   file.managed:
-    - name: /etc/dhcpd.conf
+    - name: {{ dhcpd.config }}
     - source: salt://dhcpd/files/dhcpd.conf
+    - template: jinja
     - user: root
     - group: root
     - mode: 644
