@@ -20,3 +20,9 @@ Available states
 Install, configure and turn on a basic dhcpd daemon.
 See ``pillar.example`` for pillar-data for a sample
 configuration.
+
+.. note::
+    
+    To have more pythonic variables the dashes ('-') in their names
+    are replaced with underscores ('_') so 'dynamic-bootp' becomes
+    'dynamic_bootp' in pillar[dhcpd].
