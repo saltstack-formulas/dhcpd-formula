@@ -17,6 +17,10 @@ Available states
 ``dhcpd``
 ---------
 
-Install, configure and turn on a basic dhcpd daemon.
-See ``pillar.example`` for pillar-data for a sample
-configuration.
+Install and turn on dhcpd.
+
+``dhcpd.config``
+----------------
+
+Manage configuration for dhcpd.
+See ``pillar.example`` for pillar-data for a sample configuration.
