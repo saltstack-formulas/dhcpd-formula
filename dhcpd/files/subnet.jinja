@@ -14,6 +14,12 @@
 {%- if config.has_key('broadcast_address') %}
 {{ intendation }}  option broadcast-address {{ config['broadcast_address'] }};
 {%- endif %}
+{%- if config.has_key('filename') %}
+{{ intendation }}  option filename {{ config['filename'] }};
+{%- endif %}
+{%- if config.has_key('next_server') %}
+{{ intendation }}  option next-server {{ config['next_server'] }};
+{%- endif %}
 {%- if config.has_key('routers') and config.routers is string %}
 {{ intendation }}  option routers {{ config.routers }};
 {%- elif config.has_key('routers') and config.routers is sequence %}
