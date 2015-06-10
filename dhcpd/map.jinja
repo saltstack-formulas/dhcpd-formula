@@ -7,6 +7,6 @@
     'RedHat': {
         'server': 'dhcp',
         'service': 'dhcpd',
-        'config': '/etc/dhcpd.conf',
+        'config': '/etc/dhcp/dhcpd.conf',
     },
 }, merge=salt['pillar.get']('dhcpd:lookup')) %}
