@@ -75,6 +75,14 @@ dhcpd:
             hardware: ethernet 08:00:07:26:c0:a5
             fixed_address: fantasia.fugue.com
 
+        joe:
+            comment: |
+                The hostname for a host can be passed in the DHCP response. Using the
+                host_name key sets option host-name in the dhcpd configuration.
+            hardware: ethernet 08:00:2b:4c:29:32
+            fixed_address: joe.fugue.com
+            host_name: joe
+
     classes:
         foo:
             comment: |
