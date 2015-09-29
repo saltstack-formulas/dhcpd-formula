@@ -9,7 +9,11 @@ dhcpd.conf:
     - source: salt://dhcpd/files/dhcpd.conf
     - template: jinja
     - user: root
+{% if 'BSD' in salt['grains.get']('os') %}
+    - group: wheel
+{% else %}
     - group: root
+{% endif %}
     - mode: 644
     - watch_in:
       - service: dhcpd

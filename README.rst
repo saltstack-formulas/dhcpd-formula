@@ -19,6 +19,12 @@ Available states
 
 Install and turn on dhcpd.
 
+.. note::
+    
+    To have more pythonic variables the dashes ('-') in their names
+    are replaced with underscores ('_') so 'dynamic-bootp' becomes
+    'dynamic_bootp' in pillar[dhcpd].
+
 ``dhcpd.config``
 ----------------
 

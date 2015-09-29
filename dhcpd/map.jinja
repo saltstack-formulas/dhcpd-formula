@@ -9,4 +9,9 @@
         'service': 'dhcpd',
         'config': '/etc/dhcp/dhcpd.conf',
     },
+    'FreeBSD': {
+        'server': 'isc-dhcp43-server',
+        'service': 'isc-dhcpd',
+        'config': '/usr/local/etc/dhcpd.conf'
+    },
 }, merge=salt['pillar.get']('dhcpd:lookup')) %}
