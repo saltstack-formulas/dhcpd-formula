@@ -17,12 +17,16 @@ Available states
 ``dhcpd``
 ---------
 
-Install, configure and turn on a basic dhcpd daemon.
-See ``pillar.example`` for pillar-data for a sample
-configuration.
+Install and turn on dhcpd.
 
 .. note::
     
     To have more pythonic variables the dashes ('-') in their names
     are replaced with underscores ('_') so 'dynamic-bootp' becomes
     'dynamic_bootp' in pillar[dhcpd].
+
+``dhcpd.config``
+----------------
+
+Manage configuration for dhcpd.
+See ``pillar.example`` for pillar-data for a sample configuration.

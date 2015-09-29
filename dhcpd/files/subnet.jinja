@@ -14,6 +14,18 @@
 {%- if config.has_key('broadcast_address') %}
 {{ intendation }}  option broadcast-address {{ config['broadcast_address'] }};
 {%- endif %}
+{%- if config.has_key('domain_name_servers') %}
+{{ intendation }}  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('domain_name') %}
+{{ intendation }}  option domain-name "{{ config['domain_name'] }}";
+{%- endif %}
+{%- if config.has_key('filename') %}
+{{ intendation }}  filename "{{ config['filename'] }}";
+{%- endif %}
+{%- if config.has_key('next_server') %}
+{{ intendation }}  next-server {{ config['next_server'] }};
+{%- endif %}
 {%- if config.has_key('routers') and config.routers is string %}
 {{ intendation }}  option routers {{ config.routers }};
 {%- elif config.has_key('routers') and config.routers is sequence %}
