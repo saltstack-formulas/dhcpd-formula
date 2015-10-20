@@ -3,7 +3,10 @@
 # {{ line }}
   {%- endfor %}
 {%- endif %}
+
+{%- if config.has_key('netmask') and config.netmask %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
+{%- endif %}
 {%- if config.has_key('range') %}
   {%- if config.has_key('dynamic_bootp') and config.dynamic_bootp %}
 {{ intendation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
