@@ -3,7 +3,6 @@
 # {{ line }}
   {%- endfor %}
 {%- endif %}
-
 {%- if config.has_key('netmask') and config.netmask %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
 {%- endif %}
