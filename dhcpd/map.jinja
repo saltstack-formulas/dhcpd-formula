@@ -1,4 +1,9 @@
 {% set dhcpd = salt['grains.filter_by']({
+    'Arch': {
+        'server': 'dhcp',
+        'service': 'dhcpd4',
+        'config': '/etc/dhcpd.conf',
+    },
     'Debian': {
         'server': 'isc-dhcp-server',
         'service': 'isc-dhcp-server',
