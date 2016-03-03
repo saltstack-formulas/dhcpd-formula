@@ -14,18 +14,18 @@ dhcpd:
             netmask: 255.255.255.0
 
         10.254.239.0:
-            comment: This is a very basic subnet declaration. 
+            comment: This is a very basic subnet declaration.
             netmask: 255.255.255.224
-            range: 
-                - 10.254.239.10 
+            range:
+                - 10.254.239.10
                 - 10.254.239.20
-            routers: 
+            routers:
                 - rtr-239-0-1.example.org
                 - rtr-239-0-2.example.org
 
         10.254.239.32:
             comment: |
-                This declaration allows BOOTP clients to get dynamic addresses, 
+                This declaration allows BOOTP clients to get dynamic addresses,
                 which we don't really recommend.
             netmask: 255.255.255.224
             dynamic_bootp: True
@@ -38,8 +38,8 @@ dhcpd:
         10.5.5.0:
             comment: A slightly different configuration for an internal subnet.
             netmask: 255.255.255.224
-            range: 
-                - 10.5.5.26 
+            range:
+                - 10.5.5.26
                 - 10.5.5.30
             domain_name_servers: ns1.internal.example.org
             domain_name: internal.example.org
@@ -55,9 +55,9 @@ dhcpd:
         passacaglia:
             comment: |
                 Hosts which require special configuration options can be listed in
-                host statements.   If no address is specified, the address will be 
+                host statements.   If no address is specified, the address will be
                 allocated dynamically (if possible), but the host-specific information
-                will still come from the host declaration. 
+                will still come from the host declaration.
             # We're lucky we don't need the MAC as a key...
             hardware: ethernet 0:0:c0:5d:bd:95
             filename: vmunix.passacaglia
@@ -105,10 +105,21 @@ dhcpd:
             pools:
                 # And no, those quotation marks won't get stripped:
                 - allow: members of "foo"
-                  range: 
+                  range:
                     - 10.17.224.10
                     - 10.17.224.250
                 - deny: members of "foo"
-                  range: 
-                    - 10.0.29.10 
+                  range:
+                    - 10.0.29.10
                     - 10.0.29.230
+
+    # DHCP allow customized options, which, once declared, can be used as same as the default options
+    # on every level, e.g. as global or subnet option.
+    # These options will be declared on top of dhcpd.conf.
+    # They consist of a NAME (Attention! '_' will be replaced by '-'), a CODE number
+    # and a DATATYPE (e.g. string, text, integer, ip-address)
+    customized_options:
+        # unique option name, e.g. 'auto_proxy_config' will be 'auto-proxy-config'
+        auto_proxy_config:
+            code: 252
+            type: string

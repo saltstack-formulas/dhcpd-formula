@@ -32,6 +32,12 @@
 {{ intendation }}  option routers
   {%- for router in config.routers %} {{ router }}
     {%- if not loop.last %},{% else %};{% endif %}
-  {%- endfor %} 
+  {%- endfor %}
 {%- endif %}
+{%- for option in customized.keys() %}
+  {%- if option in config %}
+    {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+{{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+  {%- endif %}
+{%- endfor %}
 {{ intendation }}}
