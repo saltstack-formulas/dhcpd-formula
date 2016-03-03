@@ -4,6 +4,11 @@
   {%- endfor %}
 {%- endif %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
+{%- if config.has_key('allow') %}
+allow {{ config.allow }};
+{%- elif config.has_key('deny') %}
+deny {{ config.deny }};
+{%- endif %}
 {%- if config.has_key('range') %}
   {%- if config.has_key('dynamic_bootp') and config.dynamic_bootp %}
 {{ intendation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
