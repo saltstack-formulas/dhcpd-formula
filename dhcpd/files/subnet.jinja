@@ -5,9 +5,9 @@
 {%- endif %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
 {%- if config.has_key('allow') %}
-allow {{ config.allow }};
+{{ intendation }}  allow {{ config.allow }};
 {%- elif config.has_key('deny') %}
-deny {{ config.deny }};
+{{ intendation }}  deny {{ config.deny }};
 {%- endif %}
 {%- if config.has_key('range') %}
   {%- if config.has_key('dynamic_bootp') and config.dynamic_bootp %}
