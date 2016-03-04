@@ -4,6 +4,14 @@
   {%- endfor %}
 {%- endif %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
+{%- if config.has_key('allow') %}
+{{ intendation }}  allow {{ config.allow }};
+{%- elif config.has_key('deny') %}
+{{ intendation }}  deny {{ config.deny }};
+{%- endif %}
+{%- if 'use_host_decl_names' in config %}
+{{ intendation }}  use-host-decl-names {{ config.use_host_decl_names }};
+{%- endif %}
 {%- if config.has_key('range') %}
   {%- if config.has_key('dynamic_bootp') and config.dynamic_bootp %}
 {{ intendation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
@@ -16,6 +24,12 @@
 {%- endif %}
 {%- if config.has_key('domain_name_servers') %}
 {{ intendation }}  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('netbios_name_servers') %}
+{{ intendation }}  option netbios-name-servers {{ config['netbios_name_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('ntp_servers') %}
+{{ intendation }}  option ntp-servers {{ config['ntp_servers']|join(',') }};
 {%- endif %}
 {%- if config.has_key('domain_name') %}
 {{ intendation }}  option domain-name "{{ config['domain_name'] }}";
@@ -32,6 +46,12 @@
 {{ intendation }}  option routers
   {%- for router in config.routers %} {{ router }}
     {%- if not loop.last %},{% else %};{% endif %}
-  {%- endfor %} 
+  {%- endfor %}
 {%- endif %}
+{%- for option in customized.keys() %}
+  {%- if option in config %}
+    {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+{{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+  {%- endif %}
+{%- endfor %}
 {{ intendation }}}
