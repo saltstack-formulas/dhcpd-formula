@@ -31,14 +31,35 @@
 {%- if config.has_key('ntp_servers') %}
 {{ intendation }}  option ntp-servers {{ config['ntp_servers']|join(',') }};
 {%- endif %}
+{%- if config.has_key('lpr_servers') %}
+{{ intendation }}  option lpr-servers {{ config['lpr_servers']|join(',') }};
+{%- endif %}
+{%- if config.has_key('irc_server') %}
+{{ intendation }}  option irc-server {{ config['irc_server']|join(',') }};
+{%- endif %}
+{%- if config.has_key('tftp_server_name') %}
+{{ intendation }}  option tftp-server-name "{{ config['tftp_server_name'] }}";
+{%- endif %}
+{%- if config.has_key('smtp_server') %}
+{{ intendation }}  option smtp-server {{ config['smtp_server'] }};
+{%- endif %}
 {%- if config.has_key('domain_name') %}
 {{ intendation }}  option domain-name "{{ config['domain_name'] }}";
+{%- endif %}
+{%- if config.has_key('domain_search') %}
+{{ intendation }}  option domain-search "{{ config['domain_search']|join('","') }}";
 {%- endif %}
 {%- if config.has_key('filename') %}
 {{ intendation }}  filename "{{ config['filename'] }}";
 {%- endif %}
 {%- if config.has_key('next_server') %}
 {{ intendation }}  next-server {{ config['next_server'] }};
+{%- endif %}
+{%- if config.has_key('default_lease_time') %}
+{{ intendation }}  default-lease-time {{ config['default_lease_time'] }};
+{%- endif %}
+{%- if config.has_key('max_lease_time') %}
+{{ intendation }}  max-lease-time {{ config['max_lease_time'] }};
 {%- endif %}
 {%- if config.has_key('routers') and config.routers is string %}
 {{ intendation }}  option routers {{ config.routers }};
@@ -53,5 +74,15 @@
     {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
 {{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
   {%- endif %}
+{%- endfor %}
+{%- for pool in salt['pillar.get']('dhcpd:subnets:{0}:pools'.format(subnet), []) %}
+{{ intendation }}  pool {
+    {%- if pool.has_key('failover_peer') %}
+{{ intendation }}    failover peer "{{ pool['failover_peer'] }}";
+    {%- endif %}
+    {%- if pool.has_key('range') %}
+{{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
+    {%- endif %}
+{{ intendation }}  }
 {%- endfor %}
 {{ intendation }}}
