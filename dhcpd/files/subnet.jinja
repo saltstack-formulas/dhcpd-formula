@@ -47,7 +47,7 @@
 {{ intendation }}  option domain-name "{{ config['domain_name'] }}";
 {%- endif %}
 {%- if config.has_key('domain_search') %}
-{{ intendation }}  option domain-search "{{ config['domain_search']|join(',') }}";
+{{ intendation }}  option domain-search "{{ config['domain_search']|join('","') }}";
 {%- endif %}
 {%- if config.has_key('filename') %}
 {{ intendation }}  filename "{{ config['filename'] }}";
