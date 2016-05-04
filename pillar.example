@@ -6,12 +6,24 @@ dhcpd:
     default_lease_time: 600
     max_lease_time: 7200
     log_facility: local7
+    failover_peers:
+        dhcp-failover:
+            primary: true
+            address: 10.152.187.5
+            port: 647
+            peer_address: 10.152.187.6
+            peer_port: 647
     subnets:
         10.152.187.0:
             comment: |
                 No service will be given on this subnet, but declaring it helps the
                 DHCP server to understand the network topology.
             netmask: 255.255.255.0
+                pools:
+                    - failover_peer: dhcp-failover
+                      range:
+                          - 10.152.187.1
+                          - 10.152.187.254
 
         10.254.239.0:
             comment: This is a very basic subnet declaration.
