@@ -13,6 +13,9 @@ dhcpd:
             port: 647
             peer_address: 10.152.187.6
             peer_port: 647
+    listen_interfaces:
+        - em1
+        - em2
     subnets:
         10.152.187.0:
             comment: |

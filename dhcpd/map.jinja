@@ -7,7 +7,8 @@
     'Debian': {
         'server': 'isc-dhcp-server',
         'service': 'isc-dhcp-server',
-        'config': '/etc/dhcp/dhcpd.conf'
+        'config': '/etc/dhcp/dhcpd.conf',
+        'service_config': '/etc/default/isc-dhcp-server',
     },
     'RedHat': {
         'server': 'dhcp',
@@ -17,7 +18,8 @@
     'FreeBSD': {
         'server': 'isc-dhcp43-server',
         'service': 'isc-dhcpd',
-        'config': '/usr/local/etc/dhcpd.conf'
+        'config': '/usr/local/etc/dhcpd.conf',
+        'service_config': '/etc/rc.conf.d/dhcpd',
     },
     'Suse': {
         'server': 'dhcp-server',
