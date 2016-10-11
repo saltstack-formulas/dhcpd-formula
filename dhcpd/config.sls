@@ -6,7 +6,7 @@ include:
 dhcpd.conf:
   file.managed:
     - name: {{ dhcpd.config }}
-    - source: salt://dhcpd/files/dhcpd.conf
+    - source: salt://dhcpd/files/dhcpd.conf.jinja
     - template: jinja
     - user: root
 {% if 'BSD' in salt['grains.get']('os') %}
