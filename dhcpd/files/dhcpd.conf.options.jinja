@@ -153,7 +153,7 @@
 {#- print customized options and return the option item/type for   #}
 {#- later merging                                                  #}
 {#-                                                                #}
-{%- macro customized(option, conf) %}
+{%- macro custom(option, conf) %}
   {%- set option = option|replace('_', '-') %}
 option {{ option }} code {{ conf['code'] }} = {{ conf['type'] }}
   {%- for k, v in option_types.iteritems() %}

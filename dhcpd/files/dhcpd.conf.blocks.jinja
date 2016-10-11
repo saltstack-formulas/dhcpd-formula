@@ -1,20 +1,5 @@
-{#- #### Class macro ############################################# #}
-{%- macro print_classes(classes) %}
-  {%- for config in classes %}
-    {%- if config.has_key('comment') %}
-      {%- for line in config.comment.splitlines() %}
-# {{ line }}
-      {%- endfor %}
-    {%- endif %}
-class "{{ config.name }}" {
-  {{- statements.print(config) | indent(2) }}
-    {%- if config.has_key('options') %}
-  {{- options.print(config.options) | indent(2) }}
-    {%- endif %}
-}
-  {% endfor %}
-{%- endmacro %}
-{#- #### Pool macro ############################################# #}
+{#- #### Pool macro ######################################################### #}
+{#- pools: are lists, not dicts                                               #}
 {%- macro print_pools(pools) %}
   {%- for config in pools %}
     {%- if config.has_key('comment') %}
@@ -30,15 +15,33 @@ pool {
 }
   {% endfor %}
 {%- endmacro %}
-{# #### Groups macro ############################################ #}
-{%- macro print_groups(groups) %}
-  {%- for config in groups %}
+{#- #### Class macro ######################################################## #}
+{#- classes: are dicts                                                        #}
+{%- macro print_classes(classes) %}
+  {%- for name, config in classes.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-group {{ config.name }} {
+class "{{ name }}" {
+  {{- statements.print(config) | indent(2) }}
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{# #### Groups macro ######################################################## #}
+{#- groups: are dicts                                                         #}
+{%- macro print_groups(groups) %}
+  {%- for name, config in groups.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+group {{ name }} {
     {%- if config.has_key('options') %}
   {{- options.print(config.options) | indent(2) }}
     {%- endif %}
@@ -48,15 +51,16 @@ group {{ config.name }} {
 }
   {% endfor %}
 {%- endmacro %}
-{# #### Host macro ############################################## #}
+{# #### Host macro ########################################################## #}
+{#- hosts: are dicts                                                          #}
 {%- macro print_hosts(hosts) %}
-  {%- for config in hosts %}
+  {%- for name, config in hosts.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-host {{ config.name }} {
+host {{ name }} {
   {{- statements.print(config) | indent(2) }}
     {%- if config.has_key('options') %}
   {{- options.print(config.options) | indent(2) }}
@@ -64,15 +68,16 @@ host {{ config.name }} {
 }
   {% endfor %}
 {%- endmacro %}
-{#- #### Subnets macro ########################################### #}
+{#- #### Subnets macro ###################################################### #}
+{#- subnets: are dicts                                                        #}
 {%- macro print_subnets(subnets) %}
-  {%- for config in subnets %}
+  {%- for name, config in subnets.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config['comment'].splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-subnet {{ config.name }} netmask {{ config.netmask }} {
+subnet {{ name }} netmask {{ config.netmask }} {
   {{- statements.print(config) | indent(2) }}
     {%- if config.has_key('options') %}
   {{- options.print(config.options) | indent(2) }}
@@ -83,15 +88,16 @@ subnet {{ config.name }} netmask {{ config.netmask }} {
 }
   {% endfor %}
 {%- endmacro %}
-{#- #### Shared networks ############################################# #}
+{#- #### Shared networks #################################################### #}
+{#- shared_subnets: are dicts                                                 #}
 {%- macro print_shared_networks(shared_networks) %}
-  {%- for config in shared_networks %}
+  {%- for name, config in shared_networks.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-shared-network {{ config.name }} {
+shared-network {{ name }} {
   {{- statements.print(config) | indent(2) }}
     {%- if config.has_key('options') %}
   {{- options.print(config.options) }}
@@ -105,43 +111,47 @@ shared-network {{ config.name }} {
 }
   {% endfor %}
 {%- endmacro %}
-{#- #### Zone macro ############################################# #}
+{#- #### Zone macro ######################################################### #}
+{#- zones: are dicts                                                          #}
 {%- macro print_zones(zones) %}
-  {%- for config in zones %}
+  {%- for name, config in zones.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-zone "{{ config.name }}" {
+zone {{ name }} {
   primary {{ config.primary }};
   key {{ config.key }};
 }
   {% endfor %}
 {%- endmacro %}
-{#- #### Key macro ############################################# #}
-{%- macro print_keys(keys) %}
-  {%- for config in keys %}
+{#- #### Key macro ########################################################## #}
+{#- _keys: are dicts                                                          #}
+{#- I don't like the _ either                                                 #}
+{%- macro print_keys(xkeys) %}
+  {%- for name, config in xkeys.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-key "{{ config.name }}" {
+key "{{ name }}" {
   algorithm {{ config.algorithm }};
   secret "{{ config.secret }}";
 }
   {% endfor %}
 {%- endmacro %}
-{#- #### Failover peer macro ################################### #}
+{#- #### Failover peer macro ################################################ #}
+{#- failover_peers: are dicts                                                 #}
 {%- macro print_failover_peers(failover_peers) %}
-  {%- for config in failover_peers %}
+  {%- for name, config in failover_peers.iteritems() %}
     {%- if config.has_key('comment') %}
       {%- for line in config.comment.splitlines() %}
 # {{ line }}
       {%- endfor %}
     {%- endif %}
-failover peer "{{ config.name }}" {
+failover peer "{{ name }}" {
     {%- if config.has_key('role') and config.role == 'primary' %}
   primary;
       {%- if config.has_key('mclt') %}

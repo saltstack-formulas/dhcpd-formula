@@ -1,69 +1,82 @@
 # dhcpd.conf
 #
-# Sample configuration file for ISC dhcpd
+# SaltStack-generated configuration file for ISC dhcpd
 #
+## DHCP global directives
 
-# option definitions common to all supported networks...
-option domain-name "example.org";
-option domain-name-servers ns1.example.org, ns2.example.org;
+failover peer "dhcp-failover" {
+  primary;
+  mclt 3600;
+  split 128;
+  address 10.152.187.5;
+  port 647;
+  peer address 10.152.187.6;
+  peer port 647;
+}
 
+filename "/pxelinux/pxelinux.bin";
+omapi-port 7911;
 default-lease-time 600;
-max-lease-time 7200;
-
-# Use this to enble / disable dynamic dns updates globally.
-#ddns-update-style none;
-
-# If this DHCP server is the official DHCP server for the local
-# network, the authoritative directive should be uncommented.
-#authoritative;
-
-# Use this to send dhcp log messages to a different log file (you also
-# have to hack syslog.conf to complete the redirection).
+one-lease-per-client True;
 log-facility local7;
+omapi-key omapi_key;
+max-lease-time 7200;
+ping-check True;
+authoritative;
 
-# No service will be given on this subnet, but declaring it helps the 
-# DHCP server to understand the network topology.
 
-subnet 10.152.187.0 netmask 255.255.255.0 {
-}
+# Define custom options for pxelinux
+option space pxelinux;
+option pxelinux.configfile code 209 = text
+option pxelinux.pathprefix code 210 = text
+option pxelinux.magic code 208 = string
+option pxelinux.reboottime code 211 = unsigned integer 32
+  
+# Define custom options for PXE
+option space PXE;
+option PXE.mtftp-ip code 1 = ip-address
+option PXE.mtftp-delay code 5 = unsigned integer 8
+option PXE.mtftp-cport code 2 = unsigned integer 16
+option PXE.mtftp-tmout code 4 = unsigned integer 8
+option PXE.mtftp-sport code 3 = unsigned integer 16
+option PXE.discovery-control-code code 6 = unsigned integer 8
+option PXE.discovery-mcast-addr code 7 = ip-address
+  
 
-# This is a very basic subnet declaration.
+## Define misc custom options
+option auto-proxy-config code 252 = string
 
-subnet 10.254.239.0 netmask 255.255.255.224 {
-  range 10.254.239.10 10.254.239.20;
-  option routers rtr-239-0-1.example.org, rtr-239-0-2.example.org;
-}
+## DHCP Options
+option pxelinux.pathprefix "/pxelinux/fils/";
+option pxelinux.magic "f1:00:74:7e";
+option pxelinux.reboottime 30;
+option pxelinux.configfile "config/common";
 
 # This declaration allows BOOTP clients to get dynamic addresses,
 # which we don't really recommend.
-
 subnet 10.254.239.32 netmask 255.255.255.224 {
+  ddns-domainname "clients.example.com";
+  ddns-rev-domainname "122.155.10.in-addr.arpa";
   range dynamic-bootp 10.254.239.40 10.254.239.60;
-  option broadcast-address 10.254.239.31;
+  ## DHCP Options
+  # option max-lease-time 7200 <-- not recognized
   option routers rtr-239-32-1.example.org;
-}
-
-# A slightly different configuration for an internal subnet.
-subnet 10.5.5.0 netmask 255.255.255.224 {
-  range 10.5.5.26 10.5.5.30;
-  option domain-name-servers ns1.internal.example.org;
+  option domain-name-servers ns1.internal.example.org, ns2.internal.example.org;
   option domain-name "internal.example.org";
-  option routers 10.5.5.1;
-  option broadcast-address 10.5.5.31;
-  default-lease-time 600;
-  max-lease-time 7200;
+  # option default-lease-time 600 <-- not recognized
+  option broadcast-address 10.254.239.31;
 }
-
-# Hosts which require special configuration options can be listed in
-# host statements.   If no address is specified, the address will be
-# allocated dynamically (if possible), but the host-specific information
-# will still come from the host declaration.
-
-host passacaglia {
-  hardware ethernet 0:0:c0:5d:bd:95;
-  filename "vmunix.passacaglia";
-  server-name "toccata.fugue.com";
+  
+# No service will be given on this subnet, but declaring it helps the
+# DHCP server to understand the network topology.
+subnet 10.152.187.0 netmask 255.255.255.0 {
+  pool {
+    range 10.152.187.1 10.152.187.254;
+    failover peer "dhcp-failover";
+  }
+    
 }
+  
 
 # Fixed IP addresses can also be specified for hosts.   These addresses
 # should not also be listed as being available for dynamic assignment.
@@ -76,29 +89,98 @@ host fantasia {
   hardware ethernet 08:00:07:26:c0:a5;
   fixed-address fantasia.fugue.com;
 }
+  
+# Hosts which require special configuration options can be listed in
+# host statements.   If no address is specified, the address will be
+# allocated dynamically (if possible), but the host-specific information
+# will still come from the host declaration.
+host passacaglia {
+  hardware ethernet 0:0:c0:5d:bd:95;
+  server-name "toccata.fugue.com";
+  filename "vmunix.passacaglia";
+}
+  
 
-# You can declare a class of clients and then do address allocation
-# based on that.   The example below shows a case where all clients
-# in a certain class get addresses on the 10.17.224/24 subnet, and all
-# other clients get addresses on the 10.0.29/24 subnet.
+group cobalt_arm {
+  ## DHCP Options
+  option root-path "/nfsroot";
+  option domain-name-servers 10.155.122.4;
+  host raq2 {
+    hardware ethernet 00:22:33:44:55:56;
+    fixed-address raq2.example.com;
+  }
+    
+  host qube1 {
+    hardware ethernet 00:22:33:44:55:96;
+    fixed-address qube1.example.com;
+  }
+    
+}
+  
 
-class "foo" {
-  match if substring (option vendor-class-identifier, 0, 4) = "SUNW";
+# Etherboot class, this is a comment
+class "Etherboot" {
+  filename "/etherboot/nbgrub";
+  vendor-option-space PXE;
+  next-server 192.168.0.1;
+  match if substring (option vendor-class-identifier, 0, 9) = "Etherboot";
+  ## DHCP Options
+  option vendor-class-identifier "Etherboot";
+  option vendor-encapsulated-options "3c:09:45:74:68:65:72:62:6f:6f:74:ff";
+  option PXE.mtftp-ip 0.0.0.0;
+}
+  
+
+# This is mynetwork, there are many networks like it but this one is mine
+shared-network mynetwork {
+  # this is my subnet, with numbers and all
+  subnet 192.168.0.0 netmask 255.255.255.0 {
+    max-lease-time 86400;
+    default-lease-time 28800;
+    next-server 192.168.0.1;
+    ## DHCP Options
+    option routers 192.168.0.1;
+    option subnet-mask 255.255.255.0;
+    option domain-name-servers 192.168.0.11, 192.168.0.12;
+    pool {
+      deny members of "Etherboot";
+      range 192.168.0.10 192.168.0.99;
+      failover peer "some_failover";
+    }
+      
+    pool {
+      range 192.168.0.200 192.168.0.254;
+      failover peer "some_failover";
+    }
+      
+  }
+    
+}
+  
+
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "93jfwjgpsdgskgnlsxvffw==";
+}
+  
+key "omapi_key" {
+  algorithm hmac-md5;
+  secret "93fw9p4h03qrp9h8gosg9w==";
+}
+  
+
+zone clients.example.com. {
+  primary 10.155.123.4;
+  key rndc-key;
+}
+  
+zone 122.155.10.in-addr.arpa. {
+  primary 10.155.123.4;
+  key rndc-key;
+}
+  
+zone 199.188.10.in-addr.arpa. {
+  primary 10.155.123.4;
+  key rndc-key;
 }
 
-shared-network 224-29 {
-  subnet 10.17.224.0 netmask 255.255.255.0 {
-    option routers rtr-224.example.org;
-  }
-  subnet 10.0.29.0 netmask 255.255.255.0 {
-    option routers rtr-29.example.org;
-  }
-  pool {
-    allow members of "foo";
-    range 10.17.224.10 10.17.224.250;
-  }
-  pool {
-    deny members of "foo";
-    range 10.0.29.10 10.0.29.230;
-  }
-}

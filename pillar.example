@@ -1,42 +1,138 @@
 dhcpd:
-    domain_name: example.org
-    domain_name_servers:
-        - ns1.example.org
-        - ns2.example.org
+    listen_interfaces:
+        - em1
+        - em2
+
+    authoritative: True
+    ping_check: True
+    one_lease_per_client: True
+    omapi_port: 7911
+    omapi_key: omapi_key
     default_lease_time: 600
     max_lease_time: 7200
     log_facility: local7
+
+    options:
+        domain_name: example.org
+        domain_name_servers:
+            - ns1.example.org
+            - ns2.example.org
+        ip-forwarding: false
+        non-local-source-routing: true
+
     failover_peers:
         dhcp-failover:
-            primary: true
+            role: primary
             address: 10.152.187.5
             port: 647
             peer_address: 10.152.187.6
             peer_port: 647
-    listen_interfaces:
-        - em1
-        - em2
+            mclt: 3600
+            split: 128
+
+    custom_options:
+        auto_proxy_config:
+            code: 252
+            type: string 
+
+    option_spaces:
+        PXE:
+            mtftp_ip:
+                code: 1
+                type: ip-address
+            mtftp_cport:
+                code: 2
+                type: unsigned integer 16
+            mtftp_sport:
+                code: 3
+                type: unsigned integer 16
+            mtftp_tmout:
+                code: 4
+                type: unsigned integer 8
+            mtftp_delay:
+                code: 5
+                type: unsigned integer 8
+            discovery_control_code:
+                code: 6
+                type: unsigned integer 8
+            discovery_mcast_addr:
+                code: 7
+                type: ip-address
+        pxelinux:
+            magic:
+                code: 208
+                type: string
+            configfile:
+                code: 209
+                type: text
+            pathprefix:
+                code: 210
+                type: text
+            reboottime:
+                code: 211
+                type: unsigned integer 32
+
+    site_option_space: pxelinux
+
+    options:
+      pxelinux.configfile: config/common
+      pxelinux.pathprefix: /pxelinux/fils/
+      pxelinux.magic: f1:00:74:7e
+      pxelinux.reboottime: 30
+    filename: /pxelinux/pxelinux.bin
+
+
+    classes:
+        Etherboot:
+            comment: Etherboot class, this is a comment
+            match: if substring (option vendor-class-identifier, 0, 9) = "Etherboot"
+            filename: /etherboot/nbgrub
+            options:
+                vendor-encapsulated-options: 3c:09:45:74:68:65:72:62:6f:6f:74:ff
+                vendor-class-identifier: Etherboot
+                PXE.mtftp-ip: 0.0.0.0
+            vendor-option-space: PXE
+            next-server: 192.168.0.1
+
+    shared_networks:
+        mynetwork:
+            comment: This is mynetwork, there are many networks like it but this one is mine
+            subnets:
+                192.168.0.0:
+                    comment: this is my subnet, with numbers and all
+                    netmask: 255.255.255.0
+                    options:
+                        subnet-mask: 255.255.255.0
+                        routers: 192.168.0.1
+                        domain-name-servers:
+                            - 192.168.0.11
+                            - 192.168.0.12
+                    default-lease-time: 28800
+                    max-lease-time: 86400
+                    next-server: 192.168.0.1
+                    pools:
+                        - range:
+                            - 192.168.0.10
+                            - 192.168.0.99
+                          failover_peer: some_failover
+                          deny:
+                            - members of "Etherboot"
+                        - range:
+                            - 192.168.0.200
+                            - 192.168.0.254
+                          failover_peer: some_failover
+
     subnets:
         10.152.187.0:
             comment: |
                 No service will be given on this subnet, but declaring it helps the
                 DHCP server to understand the network topology.
             netmask: 255.255.255.0
-                pools:
-                    - failover_peer: dhcp-failover
-                      range:
-                          - 10.152.187.1
-                          - 10.152.187.254
-
-        10.254.239.0:
-            comment: This is a very basic subnet declaration.
-            netmask: 255.255.255.224
-            range:
-                - 10.254.239.10
-                - 10.254.239.20
-            routers:
-                - rtr-239-0-1.example.org
-                - rtr-239-0-2.example.org
+            pools:
+                - failover_peer: dhcp-failover
+                  range:
+                      - 10.152.187.1
+                      - 10.152.187.254
 
         10.254.239.32:
             comment: |
@@ -47,24 +143,17 @@ dhcpd:
             range:
                 - 10.254.239.40
                 - 10.254.239.60
-            broadcast_address: 10.254.239.31
-            routers: rtr-239-32-1.example.org
-
-        10.5.5.0:
-            comment: A slightly different configuration for an internal subnet.
-            netmask: 255.255.255.224
-            range:
-                - 10.5.5.26
-                - 10.5.5.30
-            domain_name_servers: ns1.internal.example.org
-            domain_name: internal.example.org
-            routers:
-                - 10.5.5.1
-            broadcast_address: 10.5.5.31
-            default_lease_time: 600
-            max_lease_time: 7200
-
-    # End of subnets
+            options:
+                broadcast_address: 10.254.239.31
+                routers: rtr-239-32-1.example.org
+                default_lease_time: 600
+                max_lease_time: 7200
+                domain_name_servers:
+                    - ns1.internal.example.org
+                    - ns2.internal.example.org
+                domain_name: internal.example.org
+            ddns-domainname: "clients.example.com"
+            ddns-rev-domainname: "122.155.10.in-addr.arpa"
 
     hosts:
         passacaglia:
@@ -90,51 +179,39 @@ dhcpd:
             hardware: ethernet 08:00:07:26:c0:a5
             fixed_address: fantasia.fugue.com
 
-        joe:
-            comment: |
-                The hostname for a host can be passed in the DHCP response. Using the
-                host_name key sets option host-name in the dhcpd configuration.
-            hardware: ethernet 08:00:2b:4c:29:32
-            fixed_address: joe.fugue.com
-            host_name: joe
+    groups:
+        cobalt_arm:
+            next_server: 10.155.122.6
+            filename: "default.colo"
+            options:
+                root_path: "/nfsroot"
+                domain_name_servers: 10.155.122.4
+            hosts:
+                qube1:
+                    hardware: ethernet 00:22:33:44:55:96
+                    fixed_address: qube1.example.com
+                raq2:
+                    hardware: ethernet 00:22:33:44:55:56
+                    fixed_address: raq2.example.com
 
-    classes:
-        foo:
-            comment: |
-                You can declare a class of clients and then do address allocation
-                based on that.   The example below shows a case where all clients
-                in a certain class get addresses on the 10.17.224/24 subnet, and all
-                other clients get addresses on the 10.0.29/24 subnet.
-            # I'm suprised this works...
-            match: if substring (option vendor-class-identifier, 0, 4) = "SUNW"
 
-    shared_networks:
-        224-29:
-            subnets:
-                10.17.224.0:
-                    netmask: 255.255.255.0
-                    routers: rtr-224.example.org
-                10.0.29.0:
-                    netmask: 255.255.255.0
-                    routers: rtr-29.example.org
-            pools:
-                # And no, those quotation marks won't get stripped:
-                - allow: members of "foo"
-                  range:
-                    - 10.17.224.10
-                    - 10.17.224.250
-                - deny: members of "foo"
-                  range:
-                    - 10.0.29.10
-                    - 10.0.29.230
+    # keys and key are reserved, needed to prefix it with something
+    _keys:
+      rndc-key:
+        algorithm: hmac-md5
+        secret: 93jfwjgpsdgskgnlsxvffw==
+      omapi_key:
+        algorithm: hmac-md5
+        secret: 93fw9p4h03qrp9h8gosg9w==
 
-    # DHCP allow customized options, which, once declared, can be used as same as the default options
-    # on every level, e.g. as global or subnet option.
-    # These options will be declared on top of dhcpd.conf.
-    # They consist of a NAME (Attention! '_' will be replaced by '-'), a CODE number
-    # and a DATATYPE (e.g. string, text, integer, ip-address)
-    customized_options:
-        # unique option name, e.g. 'auto_proxy_config' will be 'auto-proxy-config'
-        auto_proxy_config:
-            code: 252
-            type: string
+    zones:
+      199.188.10.in-addr.arpa.:
+        primary: 10.155.123.4
+        key: rndc-key
+      clients.example.com.:
+        primary: 10.155.123.4
+        key: rndc-key
+      122.155.10.in-addr.arpa.:
+        primary: 10.155.123.4
+        key: rndc-key
+
