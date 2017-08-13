@@ -79,9 +79,9 @@
 {{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
     {%- endif %}
     {%- if pool.has_key('allow') %}
-{{ intendation }}  allow {{ pool.allow }};
+{{ intendation }}    allow {{ pool.allow }};
     {%- elif pool.has_key('deny') %}
-{{ intendation }}  deny {{ pool.deny }};
+{{ intendation }}    deny {{ pool.deny }};
     {%- endif %}
 {{ intendation }}  }
 {%- endfor %}
