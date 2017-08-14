@@ -4,11 +4,6 @@
   {%- endfor %}
 {%- endif %}
 {{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
-{%- if config.has_key('allow') %}
-{{ intendation }}  allow {{ config.allow }};
-{%- elif config.has_key('deny') %}
-{{ intendation }}  deny {{ config.deny }};
-{%- endif %}
 {%- if 'use_host_decl_names' in config %}
 {{ intendation }}  use-host-decl-names {{ config.use_host_decl_names }};
 {%- endif %}
@@ -82,6 +77,11 @@
     {%- endif %}
     {%- if pool.has_key('range') %}
 {{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
+    {%- endif %}
+    {%- if pool.has_key('allow') %}
+{{ intendation }}    allow {{ pool.allow }};
+    {%- elif pool.has_key('deny') %}
+{{ intendation }}    deny {{ pool.deny }};
     {%- endif %}
 {{ intendation }}  }
 {%- endfor %}
