@@ -75,6 +75,9 @@
     {%- if pool.has_key('failover_peer') %}
 {{ intendation }}    failover peer "{{ pool['failover_peer'] }}";
     {%- endif %}
+    {%- if pool.has_key('max_lease_time') %}
+{{ intendation }}    max-lease-time {{ pool.max_lease_time }};
+    {%- endif %}
     {%- if pool.has_key('range') %}
 {{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
     {%- endif %}
