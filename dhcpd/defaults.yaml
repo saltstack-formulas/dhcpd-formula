@@ -1,0 +1,6 @@
+dhcpd:
+  conf_dir: /etc/dhcp
+  conf_file: dhcpd
+  conf_ext: conf
+  package: 'dhcpd'
+  service: dhcpd

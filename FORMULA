@@ -1,0 +1,7 @@
+name: dhcpd
+os: RedHat, CentOS, Fedora, Debian, Ubuntu, SUSE, FreeBSD
+os_family: RedHat, Debian, Suse, FreeBSD
+version: 201801
+release: 1
+summary: Formula for ISC DHCP server
+description: Formula for installing and configuring ISC DHCP server

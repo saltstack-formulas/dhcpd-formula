@@ -1,6 +1,9 @@
 dhcpd
 =====
 
+.. image:: https://travis-ci.org/mthibaut/dhcpd-formula.png
+    :target: https://travis-ci.org/mthibaut/dhcpd-formula
+
 Formula to install, configure and start dhcpd.
 
 .. note::

@@ -1,7 +1,7 @@
 {% from "dhcpd/map.jinja" import dhcpd with context %}
 
 {% if next_gen is not defined %}
-{%   set next_gen = false %}
+{%   set next_gen = true %}
 {% endif %}
 
 include:

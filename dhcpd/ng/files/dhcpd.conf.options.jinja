@@ -1,0 +1,190 @@
+{#- Reference: http://linux.die.net/man/5/dhcp-options (or isc documentation) #}
+{#- There are many types of options. Boolean, various lists, text, ip, etc. #}
+{#- Because we also track 'custom options', we crossreference the need for quotes. #}
+{%- set option_types = {
+  'flag': False,
+  'integer': False,
+  'ip-address': False,
+  'ip6-address': False,
+  'text': True,
+  'string': True,
+  'domain-list': True,
+  'destination-descriptor': False,
+  'encapsulation': False,
+} %}
+{#- don't know what to do with these yet
+  'array':
+  'record':
+#}
+{%- set option_items = {
+  'agent.DOCSIS-device-class': 'integer',
+  'agent.circuit-id': 'string',
+  'agent.link-selection': 'ip-address',
+  'agent.remote-id': 'string',
+  'all-subnets-local': 'flag',
+  'arp-cache-timeout': 'integer',
+  'bcms-controller-address': 'ip-address',
+  'bcms-controller-names': 'domain-list',
+  'boot-size': 'integer',
+  'bootfile-name': 'text',
+  'broadcast-address': 'ip-address',
+  'classless-static-routes': ('destination-descriptor', 'ip-address'),
+  'cookie-servers': 'ip-address',
+  'default-ip-ttl': 'integer',
+  'default-tcp-ttl': 'integer',
+  'default-url': 'string',
+  'dhcp-client-identifier': 'string',
+  'dhcp-lease-time': 'integer',
+  'dhcp-max-message-size': 'integer',
+  'dhcp-message': 'text',
+  'dhcp-message-type': 'integer',
+  'dhcp-option-overload': 'integer',
+  'dhcp-parameter-request-list': 'integer',
+  'dhcp-rebinding-time': 'integer',
+  'dhcp-renewal-time': 'integer',
+  'dhcp-requested-address': 'ip-address',
+  'dhcp-server-identifier': 'ip-address',
+  'dhcp6.arch-type': 'string',
+  'dhcp6.bcms-server-a': 'ip6-address',
+  'dhcp6.bcms-server-d': 'domain-list',
+  'dhcp6.bootfile-url': 'string',
+  'dhcp6.client-id': 'string',
+  'dhcp6.domain-search': 'domain-list',
+  'dhcp6.fqdn': 'string',
+  'dhcp6.ia-ta': 'string',
+  'dhcp6.info-refresh-time': 'integer',
+  'dhcp6.interface-id': 'string',
+  'dhcp6.name-servers': 'ip6-address',
+  'dhcp6.net-id': 'integer',
+  'dhcp6.nis-servers': 'ip6-address',
+  'dhcp6.nisp-servers': 'ip6-address',
+  'dhcp6.oro': 'uint16',
+  'dhcp6.preference': 'uint8',
+  'dhcp6.relay-msg': 'string',
+  'dhcp6.remote-id': 'string',
+  'dhcp6.server-id': 'string',
+  'dhcp6.sip-servers-addresses': 'ip6-address',
+  'dhcp6.sip-servers-names': 'domain-list',
+  'dhcp6.sntp-servers': 'ip6-address',
+  'dhcp6.subscriber-id': 'string',
+  'dhcp6.unicast': 'ip6-address',
+  'dhcp6.vendor-opts': 'string',
+  'domain-name': 'text',
+  'domain-name-servers': 'ip-address',
+  'domain-search': 'domain-list',
+  'extensions-path': 'text',
+  'finger-server': 'ip-address',
+  'font-servers': 'ip-address',
+  'fqdn.encoded': 'flag',
+  'fqdn.fqdn': 'text',
+  'fqdn.no-client-update': 'flag',
+  'fqdn.rcode1': 'flag',
+  'fqdn.rcode2': 'flag',
+  'fqdn.rcode2': 'flag',
+  'fqdn.rcode2': 'flag',
+  'fqdn.server-update': 'flag',
+  'host-name': 'string',
+  'ieee802-3-encapsulation': 'flag',
+  'ien116-name-servers': 'ip-address',
+  'impress-servers': 'ip-address',
+  'interface-mtu': 'integer',
+  'ip-forwarding': 'flag',
+  'irc-server': 'ip-address',
+  'log-servers': 'ip-address',
+  'lpr-servers': 'ip-address',
+  'mask-supplier': 'flag',
+  'max-dgram-reassembly': 'integer',
+  'merit-dump': 'text',
+  'mobile-ip-home-agent': 'ip-address',
+  'nds-context': 'string',
+  'nds-servers': 'ip-address',
+  'nds-tree-name': 'string',
+  'netbios-dd-server': 'ip-address',
+  'netbios-name-servers': 'ip-address',
+  'netbios-node-type': 'integer',
+  'netbios-scope': 'string',
+  'netinfo-server-address': 'ip-address',
+  'netinfo-server-tag': 'text',
+  'nis-domain': 'text',
+  'nis-domain-name': 'domain-list',
+  'nis-servers': 'ip-address',
+  'nisp-domain-name': 'domain-list',
+  'nisplus-domain': 'text',
+  'nisplus-servers': 'ip-address',
+  'nntp-server': 'ip-address',
+  'non-local-source-routing': 'flag',
+  'ntp-servers': 'ip-address',
+  'nwip-domain': 'string',
+  'nwip-suboptions': 'string',
+  'path-mtu-aging-timeout': 'integer',
+  'path-mtu-plateau-table': 'integer',
+  'perform-mask-discovery': 'flag',
+  'policy-filter': 'ip-address',
+  'pop-server': 'ip-address',
+  'resource-location-servers': 'ip-address',
+  'root-path': 'text',
+  'router-discovery': 'flag',
+  'router-solicitation-address': 'ip-address',
+  'routers': 'ip-address',
+  'slp-directory-agent': ('flag', 'ip-address'),
+  'slp-service-scope': ('flag', 'text'),
+  'smtp-server': 'ip-address',
+  'static-routes': 'ip-address',
+  'streettalk-directory-assistance-server': 'ip-address',
+  'streettalk-server': 'ip-address',
+  'subnet-mask': 'ip-address',
+  'subnet-selection': 'string',
+  'swap-server': 'ip-address',
+  'tcp-keepalive-garbage': 'flag',
+  'tcp-keepalive-interval': 'integer',
+  'tftp-server-name': 'text',
+  'time-offset': 'integer',
+  'time-servers': 'ip-address',
+  'trailer-encapsulation': 'flag',
+  'uap-servers': 'text',
+  'user-class': 'string',
+  'vendor-class-identifier': 'string',
+  'vendor-encapsulated-options': 'string',
+  'vivso': 'string',
+  'www-server': 'ip-address',
+  'x-display-manager': 'ip-address',
+} %}
+{#- #### Customized options ###################################### #}
+{#- print customized options and return the option item/type for   #}
+{#- later merging                                                  #}
+{#-                                                                #}
+{%- macro custom(option, conf) %}
+  {%- set option = option|replace('_', '-') %}
+option {{ option }} code {{ conf['code'] }} = {{ conf['type'] }}
+  {%- for k, v in option_types.iteritems() %}
+    {%- if k in conf['type'] %}
+      {%- set type = k %}
+      {%- do option_items.update({option: k}) %}
+    {%- endif %}
+  {%- endfor %}
+{%- endmacro %}
+{#-                                                                #}
+{#- #### Option macro ############################################ #}
+{#- Just print all options in dict                                 #}
+{#- Check if quotes are needed in above dicts                      #}
+{%- macro print(options) %}
+## DHCP Options
+  {%- for name, values in options.iteritems() %}
+    {%- set quote = '' %}
+    {%- set name = name|replace('_', '-') %}
+    {%- if option_items.has_key(name) %}
+      {%- if option_types[option_items[name]] == True %}
+        {%- set quote = '"' %}
+      {%- endif %}
+option {{name}}
+      {%- if values is not iterable or values is string %}
+        {%- set values = [values] %}
+      {%- endif %}
+      {%- for value in values %} {{ quote }}{{ value }}{{ quote }}
+        {%- if not loop.last %},{% endif %}
+      {%- endfor %};
+    {%- else %}
+# option {{ name }} {{ values }} <-- not recognized
+    {%- endif %}
+  {%- endfor %}
+{% endmacro %}

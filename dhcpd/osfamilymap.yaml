@@ -1,0 +1,19 @@
+Arch:
+  conf_dir: /etc
+  package: dhcp
+  service: dhcpd4
+Debian:
+  package: isc-dhcp-server
+  service: isc-dhcp-server
+  service_config: /etc/default/isc-dhcp-server
+RedHat:
+  package: dhcp
+  service: dhcpd
+FreeBSD:
+  package: isc-dhcp43-server
+  service: isc-dhcpd
+  conf_dir: /usr/local/etc
+  service_config: /etc/rc.conf.d/dhcpd
+Suse:
+  conf_dir: /etc
+  package: dhcp-server
