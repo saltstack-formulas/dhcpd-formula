@@ -1,0 +1,203 @@
+{#- #### Pool macro ######################################################### #}
+{#- pools: are lists, not dicts                                               #}
+{%- macro print_pools(pools) %}
+  {%- for config in pools %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+pool {
+  {{- statements.print(config) | indent(2) }}
+  {%- if config.has_key('failover-peer') %}
+  failover peer "{{ config['failover-peer'] }}";
+  {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Class macro ######################################################## #}
+{#- classes: are dicts                                                        #}
+{%- macro print_classes(classes) %}
+  {%- for name, config in classes.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+class "{{ name }}" {
+  {{- statements.print(config) | indent(2) }}
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{# #### Groups macro ######################################################## #}
+{#- groups: are dicts                                                         #}
+{%- macro print_groups(groups) %}
+  {%- for name, config in groups.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+group {{ name }} {
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(2) }}
+    {%- endif %}
+    {%- if config.has_key('hosts') %}
+  {{- print_hosts(config.hosts) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{# #### Host macro ########################################################## #}
+{#- hosts: are dicts                                                          #}
+{%- macro print_hosts(hosts) %}
+  {%- for name, config in hosts.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+host {{ name }} {
+  {{- statements.print(config) | indent(2) }}
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Subnets macro ###################################################### #}
+{#- subnets: are dicts                                                        #}
+{%- macro print_subnets(subnets) %}
+  {%- for name, config in subnets.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config['comment'].splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+subnet {{ name }} netmask {{ config.netmask }} {
+  {{- statements.print(config) | indent(2) }}
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(2) }}
+    {%- endif %}
+    {%- if config.has_key('pools') %}
+  {{- print_pools(config.pools) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Shared networks #################################################### #}
+{#- shared_subnets: are dicts                                                 #}
+{%- macro print_shared_networks(shared_networks) %}
+  {%- for name, config in shared_networks.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+shared-network {{ name }} {
+  {{- statements.print(config) | indent(2) }}
+    {%- if config.has_key('options') %}
+  {{- options.print(config.options) }}
+    {%- endif %}
+    {%- if config.has_key('subnets') %}
+  {{- print_subnets(config.subnets) | indent(2) }}
+    {%- endif %}
+    {%- if config.has_key('pools') %}
+  {{- print_pools(config.pools) | indent(2) }}
+    {%- endif %}
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Zone macro ######################################################### #}
+{#- zones: are dicts                                                          #}
+{%- macro print_zones(zones) %}
+  {%- for name, config in zones.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+zone {{ name }} {
+  primary {{ config.primary }};
+  key {{ config.key }};
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Key macro ########################################################## #}
+{#- _keys: are dicts                                                          #}
+{#- I don't like the _ either                                                 #}
+{%- macro print_keys(xkeys) %}
+  {%- for name, config in xkeys.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+key "{{ name }}" {
+  algorithm {{ config.algorithm }};
+  secret "{{ config.secret }}";
+}
+  {% endfor %}
+{%- endmacro %}
+{#- #### Failover peer macro ################################################ #}
+{#- failover_peers: are dicts                                                 #}
+{%- macro print_failover_peers(failover_peers) %}
+  {%- for name, config in failover_peers.iteritems() %}
+    {%- if config.has_key('comment') %}
+      {%- for line in config.comment.splitlines() %}
+# {{ line }}
+      {%- endfor %}
+    {%- endif %}
+failover peer "{{ name }}" {
+    {%- if config.has_key('role') and config.role == 'primary' %}
+  primary;
+      {%- if config.has_key('mclt') %}
+  mclt {{ config.mclt }};
+      {%- endif %}
+      {%- if config.has_key('split') %}
+  split {{ config.split }};
+      {%- elif config.has_key('hba') %}
+  hba {{ config.hba }};
+      {%- endif %}
+    {%- else %}
+  secondary;
+    {%- endif %}
+    {%- if config.has_key('address') %}
+  address {{ config.address }};
+    {%- endif %}
+    {%- if config.has_key('port') %}
+  port {{ config.port }};
+    {%- endif %}
+    {%- if config.has_key('peer-address') %}
+  peer address {{ config['peer-address'] }};
+    {%- endif %}
+    {%- if config.has_key('peer-port') %}
+  peer port {{ config.port }};
+    {%- endif %}
+    {%- if config.has_key('max-response-delay') %}
+  max-response-delay {{ config['max-response-delay'] }};
+    {%- endif %}
+    {%- if config.has_key('max-unacked-updates') %}
+  max-unacked-updates {{ config['max-unacked-updates'] }};
+    {%- endif %}
+    {%- if config.has_key('load-balance-max-seconds') %}
+  load balance max seconds {{ config['load-balance-max-seconds'] }};
+    {%- endif %}
+    {%- if config.has_key('max-lease-misbalance') %}
+  max-lease-misbalance {{ config['max-lease-misbalance'] }};
+    {%- endif %}
+    {%- if config.has_key('max-lease-ownership') %}
+  max-lease-ownership {{ config['max-lease-ownership'] }};
+    {%- endif %}
+    {%- if config.has_key('min-balance') %}
+  min-balance {{ config['min-balance'] }};
+    {%- endif %}
+    {%- if config.has_key('max-balance') %}
+  max-balance {{ config['max-balance'] }};
+    {%- endif %}
+}
+  {%- endfor %}
+{%- endmacro %}

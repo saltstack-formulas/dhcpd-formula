@@ -1,3 +1,22 @@
+{% import_yaml "dhcpd/defaults.yaml" as defaults %}
+{% import_yaml "dhcpd/osfamilymap.yaml" as osfamilymap %}
+{% import_yaml "dhcpd/osmap.yaml" as osmap %}
+
+{% set dhcpd = salt['grains.filter_by'](
+    defaults,
+    merge=salt['grains.filter_by'](
+           osfamilymap,
+           grain='os_family',
+           merge=salt['grains.filter_by'](
+                 osmap,
+                 grain='os',
+                 merge=salt['pillar.get']('dhcpd:lookup', {}),
+         ),
+   ),
+   base='dhcpd')
+ %}
+
+{% if false %}
 {% set dhcpd = salt['grains.filter_by']({
     'Arch': {
         'server': 'dhcp',
@@ -27,3 +46,4 @@
         'config': '/etc/dhcpd.conf',
     },
 }, merge=salt['pillar.get']('dhcpd:lookup')) %}
+{% endif %}

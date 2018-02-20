@@ -1,0 +1,67 @@
+# dhcpd.conf
+#
+# SaltStack-generated configuration file for ISC dhcpd
+#
+{#- #### Templates needed in main ################################ #}
+{%- import 'dhcpd/ng/files/dhcpd.conf.options.jinja' as options %}
+{%- import 'dhcpd/ng/files/dhcpd.conf.statements.jinja' as statements %}
+{%- import 'dhcpd/ng/files/dhcpd.conf.blocks.jinja' as blocks with context %}
+{#- #### Import dhcp config array ################################ #}
+{%- set config = salt['pillar.get']('dhcpd:ng', {}) %}
+{#- #### Main stuff ############################################## #}
+## DHCP global directives
+{%- if config.has_key('failover-peers') %}
+{{ blocks.print_failover_peers(config['failover-peers']) | indent(0) }}
+{% endif %}
+
+{{ statements.print(config) | indent(0) }}
+
+{% if config.has_key('option-spaces') %}
+  {%- for space, opts in config['option-spaces'].iteritems() %}
+# Define custom options for {{ space }}
+option space {{ space }};
+    {%- for opt, conf in opts.iteritems() %}
+      {{- options.custom( space ~ '.' ~ opt, conf) }};
+    {%- endfor %}
+  {% endfor %}
+{% endif %}
+
+{%- if config.has_key('custom-options') %}
+## Define misc custom options
+  {%- for opt, conf in config['custom-options'].iteritems() %}
+    {{- options.custom( opt, conf) }};
+  {%- endfor %}
+{% endif %}
+
+{%- if config.has_key('options') %}
+  {{- options.print(config.options) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('subnets') %}
+  {{- blocks.print_subnets(config.subnets) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('hosts') %}
+  {{- blocks.print_hosts(config.hosts) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('groups') %}
+  {{- blocks.print_groups(config.groups) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('classes') %}
+  {{- blocks.print_classes(config.classes) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('shared-networks') %}
+  {{- blocks.print_shared_networks(config['shared-networks']) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('_keys') %}
+  {{- blocks.print_keys(config._keys) | indent(0) }}
+{% endif %}
+
+{%- if config.has_key('zones') %}
+  {{- blocks.print_zones(config.zones) | indent(0) }}
+{% endif %}
+

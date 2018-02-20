@@ -1,0 +1,186 @@
+# dhcpd.conf
+#
+# SaltStack-generated configuration file for ISC dhcpd
+#
+## DHCP global directives
+
+failover peer "dhcp-failover" {
+  primary;
+  mclt 3600;
+  split 128;
+  address 10.152.187.5;
+  port 647;
+  peer address 10.152.187.6;
+  peer port 647;
+}
+
+filename "/pxelinux/pxelinux.bin";
+omapi-port 7911;
+default-lease-time 600;
+one-lease-per-client True;
+log-facility local7;
+omapi-key omapi_key;
+max-lease-time 7200;
+ping-check True;
+authoritative;
+
+
+# Define custom options for pxelinux
+option space pxelinux;
+option pxelinux.configfile code 209 = text
+option pxelinux.pathprefix code 210 = text
+option pxelinux.magic code 208 = string
+option pxelinux.reboottime code 211 = unsigned integer 32
+  
+# Define custom options for PXE
+option space PXE;
+option PXE.mtftp-ip code 1 = ip-address
+option PXE.mtftp-delay code 5 = unsigned integer 8
+option PXE.mtftp-cport code 2 = unsigned integer 16
+option PXE.mtftp-tmout code 4 = unsigned integer 8
+option PXE.mtftp-sport code 3 = unsigned integer 16
+option PXE.discovery-control-code code 6 = unsigned integer 8
+option PXE.discovery-mcast-addr code 7 = ip-address
+  
+
+## Define misc custom options
+option auto-proxy-config code 252 = string
+
+## DHCP Options
+option pxelinux.pathprefix "/pxelinux/fils/";
+option pxelinux.magic "f1:00:74:7e";
+option pxelinux.reboottime 30;
+option pxelinux.configfile "config/common";
+
+# This declaration allows BOOTP clients to get dynamic addresses,
+# which we don't really recommend.
+subnet 10.254.239.32 netmask 255.255.255.224 {
+  ddns-domainname "clients.example.com";
+  ddns-rev-domainname "122.155.10.in-addr.arpa";
+  range dynamic-bootp 10.254.239.40 10.254.239.60;
+  ## DHCP Options
+  # option max-lease-time 7200 <-- not recognized
+  option routers rtr-239-32-1.example.org;
+  option domain-name-servers ns1.internal.example.org, ns2.internal.example.org;
+  option domain-name "internal.example.org";
+  # option default-lease-time 600 <-- not recognized
+  option broadcast-address 10.254.239.31;
+}
+  
+# No service will be given on this subnet, but declaring it helps the
+# DHCP server to understand the network topology.
+subnet 10.152.187.0 netmask 255.255.255.0 {
+  pool {
+    range 10.152.187.1 10.152.187.254;
+    failover peer "dhcp-failover";
+  }
+    
+}
+  
+
+# Fixed IP addresses can also be specified for hosts.   These addresses
+# should not also be listed as being available for dynamic assignment.
+# Hosts for which fixed IP addresses have been specified can boot using
+# BOOTP or DHCP.   Hosts for which no fixed address is specified can only
+# be booted with DHCP, unless there is an address range on the subnet
+# to which a BOOTP client is connected which has the dynamic-bootp flag
+# set.
+host fantasia {
+  hardware ethernet 08:00:07:26:c0:a5;
+  fixed-address fantasia.fugue.com;
+}
+  
+# Hosts which require special configuration options can be listed in
+# host statements.   If no address is specified, the address will be
+# allocated dynamically (if possible), but the host-specific information
+# will still come from the host declaration.
+host passacaglia {
+  hardware ethernet 0:0:c0:5d:bd:95;
+  server-name "toccata.fugue.com";
+  filename "vmunix.passacaglia";
+}
+  
+
+group cobalt_arm {
+  ## DHCP Options
+  option root-path "/nfsroot";
+  option domain-name-servers 10.155.122.4;
+  host raq2 {
+    hardware ethernet 00:22:33:44:55:56;
+    fixed-address raq2.example.com;
+  }
+    
+  host qube1 {
+    hardware ethernet 00:22:33:44:55:96;
+    fixed-address qube1.example.com;
+  }
+    
+}
+  
+
+# Etherboot class, this is a comment
+class "Etherboot" {
+  filename "/etherboot/nbgrub";
+  vendor-option-space PXE;
+  next-server 192.168.0.1;
+  match if substring (option vendor-class-identifier, 0, 9) = "Etherboot";
+  ## DHCP Options
+  option vendor-class-identifier "Etherboot";
+  option vendor-encapsulated-options "3c:09:45:74:68:65:72:62:6f:6f:74:ff";
+  option PXE.mtftp-ip 0.0.0.0;
+}
+  
+
+# This is mynetwork, there are many networks like it but this one is mine
+shared-network mynetwork {
+  # this is my subnet, with numbers and all
+  subnet 192.168.0.0 netmask 255.255.255.0 {
+    max-lease-time 86400;
+    default-lease-time 28800;
+    next-server 192.168.0.1;
+    ## DHCP Options
+    option routers 192.168.0.1;
+    option subnet-mask 255.255.255.0;
+    option domain-name-servers 192.168.0.11, 192.168.0.12;
+    pool {
+      deny members of "Etherboot";
+      range 192.168.0.10 192.168.0.99;
+      failover peer "some_failover";
+    }
+      
+    pool {
+      range 192.168.0.200 192.168.0.254;
+      failover peer "some_failover";
+    }
+      
+  }
+    
+}
+  
+
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "93jfwjgpsdgskgnlsxvffw==";
+}
+  
+key "omapi_key" {
+  algorithm hmac-md5;
+  secret "93fw9p4h03qrp9h8gosg9w==";
+}
+  
+
+zone clients.example.com. {
+  primary 10.155.123.4;
+  key rndc-key;
+}
+  
+zone 122.155.10.in-addr.arpa. {
+  primary 10.155.123.4;
+  key rndc-key;
+}
+  
+zone 199.188.10.in-addr.arpa. {
+  primary 10.155.123.4;
+  key rndc-key;
+}
+

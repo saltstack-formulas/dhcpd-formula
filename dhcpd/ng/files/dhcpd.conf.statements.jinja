@@ -1,0 +1,91 @@
+{#- Reference: https://linux.die.net/man/5/dhcpd.conf (or isc documentation) #}
+{#- Here, it only matters if the statement needs quoting. #}
+{%- set kv_statements = {
+  'ddns-domainname': True,
+  'ddns-hostname': True,
+  'ddns-rev-domainname': True,
+  'ddns-update-style': False,
+  'ddns-updates': False,
+  'default-lease-time': False,
+  'filename': True,
+  'fixed-address': False,
+  'fixed-address6': False,
+  'get-lease-hostnames': False,
+  'hardware': False,
+  'log-facility': False,
+  'max-lease-time': False,
+  'next-server': False,
+  'omapi-key': False,
+  'omapi-port': False,
+  'one-lease-per-client': False,
+  'ping-check': False,
+  'server-identifier': False,
+  'server-name': True,
+  'update-optimization': False,
+  'update-static-leases': False,
+  'use-host-decl-names': False,
+  'update-conflict-detection': False,
+  'vendor-option-space': False,
+} %}
+{%- set list_statements = {
+  'allow': False,
+  'deny': False,
+  'ignore': False,
+  'match': False,
+  'include': True,
+  'set': False,
+} %}
+{#- ##### Print statements ############################################# #}
+{%- macro print( config ) %}
+  {%- for statement, values in config.iteritems() %}
+    {%- set quote = '' %}
+    {%- set statement = statement|replace('_', '-') %}
+    {%- if kv_statements.has_key(statement) %}
+      {%- if kv_statements[statement] == True %}
+        {%- set quote = '"' %}
+      {%- endif %}
+{{ statement }}
+      {%- if values is iterable and values is not string %}
+        {%- for value in values %} {{ quote }}{{ value }}{{ quote }}
+          {%- if not loop.last %},{% endif %}
+        {%- endfor %};
+      {%- else %} {{ quote }}{{ values }}{{ quote }};
+      {%- endif %}
+    {%- endif %}
+{#- ### List statements ### #}
+    {%- if statement in list_statements %}
+      {%- if values is not iterable or values is string %}
+        {#- Create a list of a non-list item #}
+        {%- set values = [values] %}
+      {%- endif %}
+      {%- if statement == 'set' %}
+        {#- ### Set statement, set key = value ### #}
+        {%- for key, value in values.iteritems() %}
+{{ statement }} {{ key }} = {{ value }}
+        {%- endfor %}
+      {%- else %}
+      {#- ### Other list statement, either a single definition or repetition of ### #}
+        {%- for value in values %}
+{{ statement }} {{ value }};
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
+{#- ##### Special statements ########################################### #}
+  {%- if config.has_key('authoritative') %}
+authoritative;
+  {%- endif %}
+  {%- if config.has_key('ranges') %}
+    {%- if config.ranges is not iterable %}
+      {%- do salt.log.error("ranges is not iterable in dhcpd.ng") %}
+    {%- else %}
+      {%- for range in config.ranges %}
+        {%- if range is not string %}
+          {%- do salt.log.error("range is not a string in dhcpd.ng") %}
+        {%- else %}
+range {{ range }};
+        {%- endif %}
+      {%- endfor %}
+    {%- endif %}
+  {%- endif %}
+{%- endmacro %}
