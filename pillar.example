@@ -1,4 +1,8 @@
 dhcpd:
+    # Change some defaults
+    lookup:
+      enable: False
+
     domain_name: example.org
     domain_name_servers:
         - ns1.example.org
