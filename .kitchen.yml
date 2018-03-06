@@ -1,27 +1,25 @@
-<% driver = system('which vagrant 2>/dev/null >/dev/null') %>
+<% @vagrant = system('which vagrant 2>/dev/null >/dev/null') %>
 <% driverfile = ENV['SALT_KITCHEN_DRIVER'] || '.kitchen/driver.yml' %>
 <% platformsfile = ENV['SALT_KITCHEN_PLATFORMS'] || '.kitchen/platforms.yml' %>
 <% suitesfile = ENV['SALT_KITCHEN_SUITES'] || '.kitchen/suites.yml' %>
 <% verifierfile = ENV['SALT_KITCHEN_VERIFIER'] || '.kitchen/verifier.yml' %>
 
 <% if File.exists?(driverfile) %>
-<% driver = 'other' %>
 <%= ERB.new(File.read(driverfile)).result %>
-<% elsif driver != false %>
+<% elsif @vagrant != false %>
 driver:
   name: vagrant
 
 <% else %>
 driver:
   name: docker
-  use_sudo: false
+  #use_sudo: false
   privileged: true
 <% end %>
 
 <% if File.exists?(platformsfile) %>
 <%= ERB.new(File.read(platformsfile)).result %>
-
-<% elsif driver %>
+<% elsif @vagrant != false %>
 platforms:
   - name: bento/freebsd-11
     provisioner:
@@ -45,7 +43,7 @@ platforms:
 
 <% if File.exists?(suitesfile) %>
 <%= ERB.new(File.read(suitesfile)).result %>
-<% elsif driver %>
+<% elsif @vagrant != false %>
 suites:
   # For these manually defined systems we can't be sure of pegged salt package
   # versioning, so use salt head. This is the default so no bootstrap opts.
@@ -58,9 +56,6 @@ suites:
   - name: nitrogen
     provisioner:
       salt_bootstrap_options: -X -p git stable 2017.7
-  - name: carbon
-    provisioner:
-      salt_bootstrap_options: -X -p git stable 2016.11
 <% end %>
 
 provisioner:
