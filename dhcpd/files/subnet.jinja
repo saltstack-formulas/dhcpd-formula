@@ -88,4 +88,7 @@
     {%- endif %}
 {{ intendation }}  }
 {%- endfor %}
+{%- for host, config in salt['pillar.get']('dhcpd:subnets:{0}:hosts'.format(subnet), {}).items() %}
+{%- include 'dhcpd/files/host.jinja' with context %}
+{%- endfor %}
 {{ intendation }}}
