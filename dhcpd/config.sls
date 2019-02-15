@@ -7,6 +7,16 @@ dhcpd.conf:
   file.managed:
     - name: {{ dhcpd.config }}
     - source: salt://dhcpd/files/dhcpd.conf
+    # apparmor limits dhcpd to its config dir, so copy the file there
+    - check_cmd: |
+        sh -c '
+        export TMPDIR=$(dirname "{{ dhcpd.config }}") ;
+        TMPFILE="$(mktemp)" ;
+        cp "$0" "${TMPFILE}" ;
+        dhcpd -t -cf "${TMPFILE}" ;
+        ERROR="$?" ;
+        rm -f "${TMPFILE}" ;
+        exit $ERROR '
     - template: jinja
     - user: root
 {% if 'BSD' in salt['grains.get']('os') %}
@@ -17,7 +27,6 @@ dhcpd.conf:
     - mode: 644
     - watch_in:
       - service: dhcpd
-
 
 {% if dhcpd.service_config is defined %}
 

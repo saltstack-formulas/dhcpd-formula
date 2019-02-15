@@ -1,4 +1,8 @@
 dhcpd:
+    # Change some defaults
+    lookup:
+      enable: False
+
     domain_name: example.org
     domain_name_servers:
         - ns1.example.org
@@ -13,6 +17,8 @@ dhcpd:
             port: 647
             peer_address: 10.152.187.6
             peer_port: 647
+            split: 128
+            mclt: 3600
     listen_interfaces:
         - em1
         - em2
@@ -22,11 +28,11 @@ dhcpd:
                 No service will be given on this subnet, but declaring it helps the
                 DHCP server to understand the network topology.
             netmask: 255.255.255.0
-                pools:
-                    - failover_peer: dhcp-failover
-                      range:
-                          - 10.152.187.1
-                          - 10.152.187.254
+            pools:
+                - failover_peer: dhcp-failover
+                  range:
+                      - 10.152.187.1
+                      - 10.152.187.254
 
         10.254.239.0:
             comment: This is a very basic subnet declaration.
@@ -56,7 +62,8 @@ dhcpd:
             range:
                 - 10.5.5.26
                 - 10.5.5.30
-            domain_name_servers: ns1.internal.example.org
+            domain_name_servers:
+                - ns1.internal.example.org
             domain_name: internal.example.org
             routers:
                 - 10.5.5.1

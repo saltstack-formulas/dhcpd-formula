@@ -1,0 +1,84 @@
+<% @vagrant = system('which vagrant 2>/dev/null >/dev/null') %>
+<% driverfile = ENV['SALT_KITCHEN_DRIVER'] || '.kitchen/driver.yml' %>
+<% platformsfile = ENV['SALT_KITCHEN_PLATFORMS'] || '.kitchen/platforms.yml' %>
+<% suitesfile = ENV['SALT_KITCHEN_SUITES'] || '.kitchen/suites.yml' %>
+<% verifierfile = ENV['SALT_KITCHEN_VERIFIER'] || '.kitchen/verifier.yml' %>
+
+<% if File.exists?(driverfile) %>
+<%= ERB.new(File.read(driverfile)).result %>
+<% elsif @vagrant != false %>
+driver:
+  name: vagrant
+
+<% else %>
+driver:
+  name: docker
+  #use_sudo: false
+  privileged: true
+<% end %>
+
+<% if File.exists?(platformsfile) %>
+<%= ERB.new(File.read(platformsfile)).result %>
+<% elsif @vagrant != false %>
+platforms:
+  - name: bento/freebsd-11
+    provisioner:
+      salt_bootstrap_url: https://raw.githubusercontent.com/saltstack/salt-bootstrap/de6a459405f66877db511643320102415bb2394c/bootstrap-salt.sh
+  - name: bento/opensuse-leap-42.3
+  - name: bento/debian-9
+  - name: bento/ubuntu-16.04
+  - name: bento/fedora-27
+    provisioner:
+      salt_bootstrap_url: https://raw.githubusercontent.com/saltstack/salt-bootstrap/de6a459405f66877db511643320102415bb2394c/bootstrap-salt.sh
+
+<% else %>
+platforms:
+  - name: centos-7
+    driver_config:
+      run_command: /usr/lib/systemd/systemd
+  - name: ubuntu-16.04
+  - name: debian-8
+  - name: debian-9
+<% end %>
+
+<% if File.exists?(suitesfile) %>
+<%= ERB.new(File.read(suitesfile)).result %>
+<% elsif @vagrant != false %>
+suites:
+  # For these manually defined systems we can't be sure of pegged salt package
+  # versioning, so use salt head. This is the default so no bootstrap opts.
+  - name: head
+
+<% else %>
+suites:
+  # For automated tests against systems where pegged version
+  # support for salt is available.
+  - name: nitrogen
+    provisioner:
+      salt_bootstrap_options: -X -p git stable 2017.7
+<% end %>
+
+provisioner:
+  name: salt_solo
+  salt_install: bootstrap
+  is_file_root: true
+  require_chef: false
+  salt_copy_filter:
+    - .git
+    - .kitchen
+  state_top:
+    base:
+      "*":
+        - dhcpd
+        - dhcpd.config
+  pillars:
+    top.sls:
+      base:
+        "*":
+          - dhcpd
+  pillars-from-files:
+    dhcpd.sls: pillar.example
+
+<% if File.exists?(verifierfile) %>
+<%= ERB.new(File.read(verifierfile)).result %>
+<% end %>
