@@ -70,6 +70,12 @@ dhcpd:
             broadcast_address: 10.5.5.31
             default_lease_time: 600
             max_lease_time: 7200
+            hosts:
+                jake:
+                    comment: |
+                        Hosts can be specified for subnets, taking subnets defaults
+                    hardware: ethernet 08:00:a7:26:c0:a9
+                    fixed_address: 10.5.5.27
 
     # End of subnets
 
