@@ -1,18 +1,26 @@
 {%- if 'comment' in config %}
-    {%- for line in config.comment.splitlines() %}
+  {%- for line in config.comment.splitlines() %}
 {{ intendation }}# {{ line }}
-    {%- endfor %}
+  {%- endfor %}
 {%- endif %}
 {{ intendation }}host {{ host }} {
   {%- if 'allow' in config %}
     {%- if config.allow is iterable and config.allow is not string %}
-      {%- for item in config.allow %}allow {{ item }};{%- endfor %}
-    {%- else %}allow {{ config.allow }};{%- endif %}
+      {%- for item in config.allow %}
+{{ intendation }}  allow {{ item }};
+      {%- endfor %}
+    {%- else %}
+{{ intendation }}  allow {{ config.allow }};
+    {%- endif %}
   {%- endif %}
   {%- if 'deny' in config %}
     {%- if config.deny is iterable and config.deny is not string %}
-      {%- for item in config.deny %}deny {{ item }};{%- endfor %}
-    {%- else %}deny {{ config.deny }};{%- endif %}
+      {%- for item in config.deny %}
+{{ intendation }}  deny {{ item }};
+      {%- endfor %}
+    {%- else %}
+{{ intendation }}  deny {{ config.deny }};
+    {%- endif %}
   {%- endif %}
   {%- if 'hardware' in config %}
 {{ intendation }}  hardware {{ config.hardware }};
