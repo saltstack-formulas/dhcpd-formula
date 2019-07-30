@@ -1,49 +1,49 @@
 {%- if 'comment' in config %}
   {%- for line in config.comment.splitlines() %}
-{{ intendation }}# {{ line }}
+{{ indentation }}# {{ line }}
   {%- endfor %}
 {%- endif %}
-{{ intendation }}host {{ host }} {
+{{ indentation }}host {{ host }} {
   {%- if 'allow' in config %}
     {%- if config.allow is iterable and config.allow is not string %}
       {%- for item in config.allow %}
-{{ intendation }}  allow {{ item }};
+{{ indentation }}  allow {{ item }};
       {%- endfor %}
     {%- else %}
-{{ intendation }}  allow {{ config.allow }};
+{{ indentation }}  allow {{ config.allow }};
     {%- endif %}
   {%- endif %}
   {%- if 'deny' in config %}
     {%- if config.deny is iterable and config.deny is not string %}
       {%- for item in config.deny %}
-{{ intendation }}  deny {{ item }};
+{{ indentation }}  deny {{ item }};
       {%- endfor %}
     {%- else %}
-{{ intendation }}  deny {{ config.deny }};
+{{ indentation }}  deny {{ config.deny }};
     {%- endif %}
   {%- endif %}
   {%- if 'hardware' in config %}
-{{ intendation }}  hardware {{ config.hardware }};
+{{ indentation }}  hardware {{ config.hardware }};
   {%- endif %}
   {%- if 'fixed_address' in config %}
-{{ intendation }}  fixed-address {{ config.fixed_address }};
+{{ indentation }}  fixed-address {{ config.fixed_address }};
   {%- endif %}
   {%- if 'filename' in config %}
-{{ intendation }}  filename "{{ config.filename }}";
+{{ indentation }}  filename "{{ config.filename }}";
   {%- endif %}
   {%- if 'next_server' in config %}
-{{ intendation }}  next-server {{ config.next_server }};
+{{ indentation }}  next-server {{ config.next_server }};
   {%- endif %}
   {%- if 'server_name' in config %}
-{{ intendation }}  server-name "{{ config.server_name }}";
+{{ indentation }}  server-name "{{ config.server_name }}";
   {%- endif %}
   {%- if 'host_name' in config %}
-{{ intendation }}  option host-name "{{ config.host_name }}";
+{{ indentation }}  option host-name "{{ config.host_name }}";
   {%- endif %}
   {%- for option in customized.keys() %}
     {%- if option in config %}
      {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
-{{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+{{ indentation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
     {%- endif %}
   {%- endfor %}
 }

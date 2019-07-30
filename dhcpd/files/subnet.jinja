@@ -3,63 +3,63 @@
 # {{ line }}
   {%- endfor %}
 {%- endif %}
-{{ intendation }}subnet {{ subnet }} netmask {{ config.netmask }} {
+{{ indentation }}subnet {{ subnet }} netmask {{ config.netmask }} {
 {%- if 'use_host_decl_names' in config %}
-{{ intendation }}  use-host-decl-names {{ config.use_host_decl_names }};
+{{ indentation }}  use-host-decl-names {{ config.use_host_decl_names }};
 {%- endif %}
 {%- if 'range' in config %}
   {%- if 'dynamic_bootp' in config and config.dynamic_bootp %}
-{{ intendation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
+{{ indentation }}  range dynamic-bootp {{ config.range[0] }} {{ config.range[1] }};
   {%- else %}
-{{ intendation }}  range {{ config.range[0] }} {{ config.range[1] }};
+{{ indentation }}  range {{ config.range[0] }} {{ config.range[1] }};
   {%- endif %}
 {%- endif %}
 {%- if 'broadcast_address' in config %}
-{{ intendation }}  option broadcast-address {{ config['broadcast_address'] }};
+{{ indentation }}  option broadcast-address {{ config['broadcast_address'] }};
 {%- endif %}
 {%- if 'domain_name_servers' in config %}
-{{ intendation }}  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
+{{ indentation }}  option domain-name-servers {{ config['domain_name_servers']|join(',') }};
 {%- endif %}
 {%- if 'netbios_name_servers' in config %}
-{{ intendation }}  option netbios-name-servers {{ config['netbios_name_servers']|join(',') }};
+{{ indentation }}  option netbios-name-servers {{ config['netbios_name_servers']|join(',') }};
 {%- endif %}
 {%- if 'ntp_servers' in config %}
-{{ intendation }}  option ntp-servers {{ config['ntp_servers']|join(',') }};
+{{ indentation }}  option ntp-servers {{ config['ntp_servers']|join(',') }};
 {%- endif %}
 {%- if 'lpr_servers' in config %}
-{{ intendation }}  option lpr-servers {{ config['lpr_servers']|join(',') }};
+{{ indentation }}  option lpr-servers {{ config['lpr_servers']|join(',') }};
 {%- endif %}
 {%- if 'irc_server' in config %}
-{{ intendation }}  option irc-server {{ config['irc_server']|join(',') }};
+{{ indentation }}  option irc-server {{ config['irc_server']|join(',') }};
 {%- endif %}
 {%- if 'tftp_server_name' in config %}
-{{ intendation }}  option tftp-server-name "{{ config['tftp_server_name'] }}";
+{{ indentation }}  option tftp-server-name "{{ config['tftp_server_name'] }}";
 {%- endif %}
 {%- if 'smtp_server' in config %}
-{{ intendation }}  option smtp-server {{ config['smtp_server'] }};
+{{ indentation }}  option smtp-server {{ config['smtp_server'] }};
 {%- endif %}
 {%- if 'domain_name' in config %}
-{{ intendation }}  option domain-name "{{ config['domain_name'] }}";
+{{ indentation }}  option domain-name "{{ config['domain_name'] }}";
 {%- endif %}
 {%- if 'domain_search' in config %}
-{{ intendation }}  option domain-search "{{ config['domain_search']|join('","') }}";
+{{ indentation }}  option domain-search "{{ config['domain_search']|join('","') }}";
 {%- endif %}
 {%- if 'filename' in config %}
-{{ intendation }}  filename "{{ config['filename'] }}";
+{{ indentation }}  filename "{{ config['filename'] }}";
 {%- endif %}
 {%- if 'next_server' in config %}
-{{ intendation }}  next-server {{ config['next_server'] }};
+{{ indentation }}  next-server {{ config['next_server'] }};
 {%- endif %}
 {%- if 'default_lease_time' in config %}
-{{ intendation }}  default-lease-time {{ config['default_lease_time'] }};
+{{ indentation }}  default-lease-time {{ config['default_lease_time'] }};
 {%- endif %}
 {%- if 'max_lease_time' in config %}
-{{ intendation }}  max-lease-time {{ config['max_lease_time'] }};
+{{ indentation }}  max-lease-time {{ config['max_lease_time'] }};
 {%- endif %}
 {%- if 'routers' in config and config.routers is string %}
-{{ intendation }}  option routers {{ config.routers }};
+{{ indentation }}  option routers {{ config.routers }};
 {%- elif 'routers' in config and config.routers is sequence %}
-{{ intendation }}  option routers
+{{ indentation }}  option routers
   {%- for router in config.routers %} {{ router }}
     {%- if not loop.last %},{% else %};{% endif %}
   {%- endfor %}
@@ -67,28 +67,28 @@
 {%- for option in customized.keys() %}
   {%- if option in config %}
     {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
-{{ intendation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
+{{ indentation }}  option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
   {%- endif %}
 {%- endfor %}
 {%- for pool in salt['pillar.get']('dhcpd:subnets:{0}:pools'.format(subnet), []) %}
-{{ intendation }}  pool {
+{{ indentation }}  pool {
     {%- if 'failover_peer' in pool %}
-{{ intendation }}    failover peer "{{ pool['failover_peer'] }}";
+{{ indentation }}    failover peer "{{ pool['failover_peer'] }}";
     {%- endif %}
     {%- if 'max_lease_time' in pool %}
-{{ intendation }}    max-lease-time {{ pool.max_lease_time }};
+{{ indentation }}    max-lease-time {{ pool.max_lease_time }};
     {%- endif %}
     {%- if 'range' in pool %}
-{{ intendation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
+{{ indentation }}    range {{ pool.range[0] }} {{ pool.range[1] }};
     {%- endif %}
     {%- if 'allow' in pool %}
-{{ intendation }}    allow {{ pool.allow }};
+{{ indentation }}    allow {{ pool.allow }};
     {%- elif 'deny' in pool %}
-{{ intendation }}    deny {{ pool.deny }};
+{{ indentation }}    deny {{ pool.deny }};
     {%- endif %}
-{{ intendation }}  }
+{{ indentation }}  }
 {%- endfor %}
 {%- for host, config in salt['pillar.get']('dhcpd:subnets:{0}:hosts'.format(subnet), {}).items() %}
 {%- include 'dhcpd/files/host.jinja' with context %}
 {%- endfor %}
-{{ intendation }}}
+{{ indentation }}}
