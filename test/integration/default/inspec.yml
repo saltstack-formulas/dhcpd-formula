@@ -1,8 +1,8 @@
 name: default
-title: DHCPD formula
+title: dhcpd formula
 maintainer: SaltStack Formulas
 license: Apache-2.0
-summary: Verify that the DHCP formula is setup and configured correctly
+summary: Verify that the dhcpd formula is setup and configured correctly
 supports:
   - platform-name: debian
   - platform-name: ubuntu
