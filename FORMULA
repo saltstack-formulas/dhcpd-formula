@@ -1,0 +1,9 @@
+name: dhcpd
+os: Debian, Ubuntu, Raspbian, RedHat, CentOS, Arch, FreeBSD
+os_family: Debian, RedHat, Arch, FreeBSD
+version: 3.1.1
+release: 1
+minimum_version: 2016.11
+summary: DHCPD formula
+description: Formula to install, configure and start dhcpd
+top_level_dir: dhcpd
