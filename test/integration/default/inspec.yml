@@ -1,0 +1,11 @@
+name: default
+title: DHCPD formula
+maintainer: SaltStack Formulas
+license: Apache-2.0
+summary: Verify that the DHCP formula is setup and configured correctly
+supports:
+  - platform-name: debian
+  - platform-name: ubuntu
+  - platform-name: centos
+  - platform-name: freebsd
+  - platform-name: arch
