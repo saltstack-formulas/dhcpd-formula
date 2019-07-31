@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.7.0...v0.7.1) (2019-07-31)
+
+
+### Code Refactoring
+
+* **indent:** use filter block to indent included files ([451667f](https://github.com/saltstack-formulas/dhcpd-formula/commit/451667f))
+
 # [0.7.0](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.6.0...v0.7.0) (2019-07-31)
 
 
