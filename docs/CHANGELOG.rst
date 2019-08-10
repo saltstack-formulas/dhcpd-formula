@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.8.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.7.1...v0.8.0>`_ (2019-08-10)
+-------------------------------------------------------------------------------------------------------
+
+Features
+^^^^^^^^
+
+
+* **yamllint:** include for this repo and apply rules throughout (\ `d70c724 <https://github.com/saltstack-formulas/dhcpd-formula/commit/d70c724>`_\ )
+
 `0.7.1 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.7.0...v0.7.1>`_ (2019-07-31)
 -------------------------------------------------------------------------------------------------------
 
