@@ -92,10 +92,10 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
   }
 {%- endfor %}
 {%- if 'ddns_domainname' in config %}
-  ddns-domainname {{ quote }}{{ config['ddns_domainname'] }}{{ quote }};
+  ddns-domainname {{ dquote }}{{ config['ddns_domainname'] }}{{ dquote }};
 {%- endif %}
 {%- if 'ddns_rev_domainname' in config %}
-  ddns-rev-domainname {{ quote }}{{ config['ddns_rev_domainname'] }}{{ quote }};
+  ddns-rev-domainname {{ dquote }}{{ config['ddns_rev_domainname'] }}{{ dquote }};
 {%- endif %}
 {%- for host, config in salt['pillar.get']('dhcpd:subnets:{0}:hosts'.format(subnet), {}).items() %}
   {%- filter indent(width=2) %}
