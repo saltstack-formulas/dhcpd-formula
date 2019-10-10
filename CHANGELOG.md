@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.1](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.8.0...v0.8.1) (2019-10-09)
+
+
+### Continuous Integration
+
+* **kitchen:** change `log_level` to `debug` instead of `info` ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/3e11354))
+* **kitchen:** install required packages to bootstrapped `opensuse` [skip ci] ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/5ec2e57))
+* **kitchen:** use bootstrapped `opensuse` images until `2019.2.2` [skip ci] ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/f914fe3))
+* **kitchen+travis:** replace EOL pre-salted images ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/c33b06b))
+* **platform:** add `arch-base-latest` (commented out for now) [skip ci] ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/99c7477))
+* **yamllint:** add rule `empty-values` & use new `yaml-files` setting ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/0688273))
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/d7c9254))
+* use `dist: bionic` & apply `opensuse-leap-15` SCP error workaround ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/5dc28e1))
+
+
+### Tests
+
+* **inspec:** add remaining platforms [skip ci] ([](https://github.com/saltstack-formulas/dhcpd-formula/commit/483d70d))
+
 # [0.8.0](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.7.1...v0.8.0) (2019-08-10)
 
 
