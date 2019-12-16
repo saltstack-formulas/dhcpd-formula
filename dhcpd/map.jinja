@@ -26,4 +26,10 @@
         'service': 'dhcpd',
         'config': '/etc/dhcpd.conf',
     },
+    'Gentoo': {
+        'server': 'net-misc/dhcp',
+        'service': 'dhcpd',
+        'config': '/etc/dhcp/dhcpd.conf',
+        'service_config': '/etc/conf.d/dhcpd',
+    },
 }, merge=salt['pillar.get']('dhcpd:lookup')) %}
