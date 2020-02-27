@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.10.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.9.0...v0.10.0>`_ (2020-02-27)
+---------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen:** avoid using bootstrap for ``master`` instances [skip ci] (\ `fc755da <https://github.com/saltstack-formulas/dhcpd-formula/commit/fc755da7657b4161d31389c9db72a383f6751dcc>`_\ )
+* **travis:** use ``major.minor`` for ``semantic-release`` version [skip ci] (\ `9780bc3 <https://github.com/saltstack-formulas/dhcpd-formula/commit/9780bc33e621ac3595681bfc31ba65990a5c7afe>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **map.jinja:** add Red Hat styled service configuration (\ `ebf6e50 <https://github.com/saltstack-formulas/dhcpd-formula/commit/ebf6e5060fb82628c58ba99c010c90d746584338>`_\ )
+
 `0.9.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.8.1...v0.9.0>`_ (2019-12-16)
 -------------------------------------------------------------------------------------------------------
 
