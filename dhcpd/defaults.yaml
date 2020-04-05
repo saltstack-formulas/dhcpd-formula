@@ -17,6 +17,23 @@ dhcpd:
   use_host_decl_names: false
   allow: []
   deny: []
+  ldap_server: ''
+  ldap_port: ''
+  ldap_username: ''
+  ldap_password: ''
+  ldap_base_dn: ''
+  ldap_method: ''
+  ldap_debug_file: ''
+  ldap_init_retry: 0
+  ldap_ssl: ''
+  ldap_tls_reqcert: ''
+  ldap_tls_ca_file: ''
+  ldap_tls_ca_dir: ''
+  ldap_tls_cert: ''
+  ldap_tls_key: ''
+  ldap_tls_crlcheck: ''
+  ldap_tls_ciphers: ''
+  ldap_tls_randfile: ''
   ddns_update_style: ''
   ddns_domainname: ''
   update_static_leases: false
