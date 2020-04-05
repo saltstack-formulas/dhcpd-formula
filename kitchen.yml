@@ -160,6 +160,7 @@ suites:
       state_top:
         base:
           '*':
+            - dhcpd.yaml_dump
             - dhcpd.config
       pillars:
         top.sls:
