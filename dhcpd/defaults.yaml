@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+dhcpd:
+  listen_interfaces: []
+  domain_name: ''
+  domain_name_servers: []
+  subnet_mask: ''
+  routers: []
+  domain_search: []
+  default_lease_time: 0
+  max_lease_time: 0
+  one_lease_per_client: ''
+  get_lease_hostnames: ''
+  server_identifier: ''
+  server_name: ''
+  use_host_decl_names: false
+  allow: []
+  deny: []
+  ddns_update_style: ''
+  ddns_domainname: ''
+  update_static_leases: true
+  authoritative: true
+  log_facility: ''
+  classes: {}
+  failover_peers: {}
+  keys: {}
+  zones: {}
+  subnets: {}
+  hosts: {}
+  shared_networks: {}
+  customized_options: {}
