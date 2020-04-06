@@ -4,7 +4,7 @@ This list is sorted by the number of commits per contributor in _descending_ ord
 
 Avatar|Contributor|Contributions
 :-:|---|:-:
-<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|41
+<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|43
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1800660?v=4' width='36' height='36' alt='@aboe76'>|[@aboe76](https://github.com/aboe76)|11
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/6215293?v=4' width='36' height='36' alt='@0xf10e'>|[@0xf10e](https://github.com/0xf10e)|10
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/1396878?v=4' width='36' height='36' alt='@gravyboat'>|[@gravyboat](https://github.com/gravyboat)|10
@@ -25,6 +25,7 @@ Avatar|Contributor|Contributions
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/242396?v=4' width='36' height='36' alt='@javierbertoli'>|[@javierbertoli](https://github.com/javierbertoli)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/2209106?v=4' width='36' height='36' alt='@mthibaut'>|[@mthibaut](https://github.com/mthibaut)|1
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/6086064?v=4' width='36' height='36' alt='@mgomersbach'>|[@mgomersbach](https://github.com/mgomersbach)|1
+<img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/46799934?v=4' width='36' height='36' alt='@sticky-note'>|[@sticky-note](https://github.com/sticky-note)|1
 
 ---
 

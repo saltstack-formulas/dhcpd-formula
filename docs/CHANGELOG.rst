@@ -2,6 +2,21 @@
 Changelog
 =========
 
+`0.10.2 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.1...v0.10.2>`_ (2020-04-06)
+----------------------------------------------------------------------------------------------------------
+
+Code Refactoring
+^^^^^^^^^^^^^^^^
+
+
+* **map:** use ``map.jinja`` ng (\ `0ebe742 <https://github.com/saltstack-formulas/dhcpd-formula/commit/0ebe7422d82f96484529581dc86dc2867c7348dc>`_\ )
+
+Tests
+^^^^^
+
+
+* **yaml_dump_spec:** update (\ `a57912d <https://github.com/saltstack-formulas/dhcpd-formula/commit/a57912d18a6aa1b94a1455e8d692861f0cc0eb58>`_\ )
+
 `0.10.1 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.0...v0.10.1>`_ (2020-04-06)
 ----------------------------------------------------------------------------------------------------------
 
