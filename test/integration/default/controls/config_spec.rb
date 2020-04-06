@@ -71,6 +71,7 @@ control 'DHCPD configuration' do
 
         # Customized dhcp options
         option auto-proxy-config code 252 = string;
+
         # option definitions common to all supported networks...
         option domain-name "example.org";
         option domain-name-servers ns1.example.org, ns2.example.org;
@@ -144,16 +145,6 @@ control 'DHCPD configuration' do
         }
 
 
-        # Hosts which require special configuration options can be listed in
-        # host statements.  If no address is specified, the address will be
-        # allocated dynamically (if possible), but the host-specific information
-        # will still come from the host declaration.
-        host passacaglia {
-          hardware ethernet 0:0:c0:5d:bd:95;
-          filename "vmunix.passacaglia";
-          server-name "toccata.fugue.com";
-        }
-
         # Fixed IP addresses can also be specified for hosts.  These addresses
         # should not also be listed as being available for dynamic assignment.
         # Hosts for which fixed IP addresses have been specified can boot using
@@ -174,14 +165,24 @@ control 'DHCPD configuration' do
           option host-name "joe";
         }
 
+        # Hosts which require special configuration options can be listed in
+        # host statements.  If no address is specified, the address will be
+        # allocated dynamically (if possible), but the host-specific information
+        # will still come from the host declaration.
+        host passacaglia {
+          hardware ethernet 0:0:c0:5d:bd:95;
+          filename "vmunix.passacaglia";
+          server-name "toccata.fugue.com";
+        }
+
         shared-network 224-29 {
-        #{spurious_whitespace}
-          subnet 10.17.224.0 netmask 255.255.255.0 {
-            option routers rtr-224.example.org;
-          }
         #{spurious_whitespace}
           subnet 10.0.29.0 netmask 255.255.255.0 {
             option routers rtr-29.example.org;
+          }
+        #{spurious_whitespace}
+          subnet 10.17.224.0 netmask 255.255.255.0 {
+            option routers rtr-224.example.org;
           }
           pool {
             allow members of "foo";
