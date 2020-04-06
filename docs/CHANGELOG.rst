@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.10.1 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.0...v0.10.1>`_ (2020-04-06)
+----------------------------------------------------------------------------------------------------------
+
+Tests
+^^^^^
+
+
+* **yaml_dump:** add functionality, initial tests & add to Kitchen (\ `76d43f5 <https://github.com/saltstack-formulas/dhcpd-formula/commit/76d43f57595d595883b766c4bded8401d3fd0175>`_\ )
+
 `0.10.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.9.0...v0.10.0>`_ (2020-02-27)
 ---------------------------------------------------------------------------------------------------------
 
