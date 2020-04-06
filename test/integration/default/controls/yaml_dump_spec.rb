@@ -89,6 +89,23 @@ control 'DHCPD `map.jinja` YAML dump' do
         filename: vmunix.passacaglia
         server_name: toccata.fugue.com
     keys: {}
+    ldap_base_dn: ''
+    ldap_debug_file: ''
+    ldap_init_retry: 0
+    ldap_method: ''
+    ldap_password: ''
+    ldap_port: ''
+    ldap_server: ''
+    ldap_ssl: ''
+    ldap_tls_ca_dir: ''
+    ldap_tls_ca_file: ''
+    ldap_tls_cert: ''
+    ldap_tls_ciphers: ''
+    ldap_tls_crlcheck: ''
+    ldap_tls_key: ''
+    ldap_tls_randfile: ''
+    ldap_tls_reqcert: ''
+    ldap_username: ''
     listen_interfaces:
     - em1
     - em2

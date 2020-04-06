@@ -80,7 +80,9 @@ control 'DHCPD configuration' do
 
         #use-host-decl-names off;
 
-        # Use this to enble / disable dynamic dns updates globally.
+        # LDAP Backend Configuration
+
+        # Use this to enable / disable dynamic dns updates globally.
         #ddns-update-style none;
         #update-static-leases off;
 

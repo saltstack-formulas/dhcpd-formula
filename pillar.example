@@ -5,7 +5,6 @@ dhcpd:
   # Change some defaults
   lookup:
     enable: false
-    # server: isc-dhcp-server-ldap
 
   domain_name: example.org
   domain_name_servers:
