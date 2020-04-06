@@ -8,26 +8,94 @@ control 'DHCPD `map.jinja` YAML dump' do
     allow: []
     arch: #{arch}
     authoritative: false
-    classes: {}
+    classes:
+      foo:
+        comment: 'You can declare a class of clients and then do address allocation
+
+          based on that.  The example below shows a case where all clients
+
+          in a certain class get addresses on the 10.17.224/24 subnet, and all
+
+          other clients get addresses on the 10.0.29/24 subnet.
+
+    '
+        match: if substring (option vendor-class-identifier, 0, 4) = "SUNW"
   COMMON
   common02 = <<~COMMON.chomp
-    customized_options: {}
+    customized_options:
+      auto_proxy_config:
+        code: 252
+        type: string
     ddns_domainname: ''
     ddns_update_style: ''
-    default_lease_time: 0
+    default_lease_time: 600
     deny: []
-    domain_name: ''
-    domain_name_servers: []
+    domain_name: example.org
+    domain_name_servers:
+    - ns1.example.org
+    - ns2.example.org
     domain_search: []
   COMMON
   common03 = <<~COMMON.chomp
-    failover_peers: {}
+    failover_peers:
+      dhcp-failover:
+        primary: true
+        address: 10.152.187.5
+        port: 647
+        peer_address: 10.152.187.6
+        peer_port: 647
+        split: 128
+        mclt: 3600
     get_lease_hostnames: ''
-    hosts: {}
+    hosts:
+      fantasia:
+        comment: 'Fixed IP addresses can also be specified for hosts.  These addresses
+
+          should not also be listed as being available for dynamic assignment.
+
+          Hosts for which fixed IP addresses have been specified can boot using
+
+          BOOTP or DHCP.  Hosts for which no fixed address is specified can only
+
+          be booted with DHCP, unless there is an address range on the subnet
+
+          to which a BOOTP client is connected which has the dynamic-bootp flag
+
+          set.
+
+    '
+        hardware: ethernet 08:00:07:26:c0:a5
+        fixed_address: fantasia.fugue.com
+      joe:
+        comment: 'The hostname for a host can be passed in the DHCP response. Using the
+
+          host_name key sets option host-name in the dhcpd configuration.
+
+    '
+        hardware: ethernet 08:00:2b:4c:29:32
+        fixed_address: joe.fugue.com
+        host_name: joe
+      passacaglia:
+        comment: 'Hosts which require special configuration options can be listed in
+
+          host statements.  If no address is specified, the address will be
+
+          allocated dynamically (if possible), but the host-specific information
+
+          will still come from the host declaration.
+
+    '
+        hardware: ethernet 0:0:c0:5d:bd:95
+        filename: vmunix.passacaglia
+        server_name: toccata.fugue.com
     keys: {}
-    listen_interfaces: []
-    log_facility: ''
-    max_lease_time: 0
+    listen_interfaces:
+    - em1
+    - em2
+    log_facility: local7
+    lookup:
+      enable: false
+    max_lease_time: 7200
     one_lease_per_client: ''
   COMMON
   common04 = <<~COMMON.chomp
@@ -38,9 +106,81 @@ control 'DHCPD `map.jinja` YAML dump' do
     server_name: ''
   COMMON
   common06 = <<~COMMON.chomp
-    shared_networks: {}
+    shared_networks:
+      224-29:
+        subnets:
+          10.17.224.0:
+            netmask: 255.255.255.0
+            routers: rtr-224.example.org
+          10.0.29.0:
+            netmask: 255.255.255.0
+            routers: rtr-29.example.org
+        pools:
+        - allow: members of "foo"
+          range:
+          - 10.17.224.10
+          - 10.17.224.250
+        - deny: members of "foo"
+          range:
+          - 10.0.29.10
+          - 10.0.29.230
     subnet_mask: ''
-    subnets: {}
+    subnets:
+      10.152.187.0:
+        comment: 'No service will be given on this subnet, but declaring it helps the
+
+          DHCP server to understand the network topology.
+
+    '
+        netmask: 255.255.255.0
+        pools:
+        - failover_peer: dhcp-failover
+          range:
+          - 10.152.187.1
+          - 10.152.187.254
+      10.254.239.0:
+        comment: This is a very basic subnet declaration.
+        netmask: 255.255.255.224
+        range:
+        - 10.254.239.10
+        - 10.254.239.20
+        routers:
+        - rtr-239-0-1.example.org
+        - rtr-239-0-2.example.org
+      10.254.239.32:
+        comment: 'This declaration allows BOOTP clients to get dynamic addresses,
+
+          which we don''t really recommend.
+
+    '
+        netmask: 255.255.255.224
+        dynamic_bootp: true
+        range:
+        - 10.254.239.40
+        - 10.254.239.60
+        broadcast_address: 10.254.239.31
+        routers: rtr-239-32-1.example.org
+      10.5.5.0:
+        comment: A slightly different configuration for an internal subnet.
+        netmask: 255.255.255.224
+        range:
+        - 10.5.5.26
+        - 10.5.5.30
+        domain_name_servers:
+        - ns1.internal.example.org
+        domain_name: internal.example.org
+        routers:
+        - 10.5.5.1
+        broadcast_address: 10.5.5.31
+        default_lease_time: 600
+        max_lease_time: 7200
+        hosts:
+          jake:
+            comment: 'Hosts can be specified for subnets, taking subnets defaults
+
+    '
+            hardware: ethernet 08:00:a7:26:c0:a9
+            fixed_address: 10.5.5.27
     update_static_leases: false
     use_host_decl_names: false
     zones: {}
