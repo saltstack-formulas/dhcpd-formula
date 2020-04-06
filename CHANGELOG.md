@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.10.4](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.3...v0.10.4) (2020-04-06)
+
+
+### Bug Fixes
+
+* **map.jinja:** ensure whole pillar is merged in ([4baed92](https://github.com/saltstack-formulas/dhcpd-formula/commit/4baed92e8768e6e7cbd6537c9359d5a28e838387))
+
+
+### Code Refactoring
+
+* **tpls:** refactor templates ([9648e0d](https://github.com/saltstack-formulas/dhcpd-formula/commit/9648e0d0872db66e26ca11d6a0d860d6afff79ab))
+
+
+### Tests
+
+* **config_spec:** update according to refactored `map.jinja` ([880b281](https://github.com/saltstack-formulas/dhcpd-formula/commit/880b2815ee8102904b6586ded0d1e81412458575))
+* **yaml_dump_spec:** update according to refactored `map.jinja` ([174e8d2](https://github.com/saltstack-formulas/dhcpd-formula/commit/174e8d22299d3dc464e2b5e0bf11fd280b51c27e))
+
 ## [0.10.3](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.2...v0.10.3) (2020-04-06)
 
 
