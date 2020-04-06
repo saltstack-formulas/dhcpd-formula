@@ -2,6 +2,17 @@
 Changelog
 =========
 
+`0.10.3 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.2...v0.10.3>`_ (2020-04-06)
+----------------------------------------------------------------------------------------------------------
+
+Tests
+^^^^^
+
+
+* **config_spec:** fix existing tests (repeating same control twice) (\ `3c7cd44 <https://github.com/saltstack-formulas/dhcpd-formula/commit/3c7cd4483a1b012c33e0b0b53f16d3982f8d7e22>`_\ )
+* **config_spec:** update with file contents to test (\ `0ae0a66 <https://github.com/saltstack-formulas/dhcpd-formula/commit/0ae0a660e8a02481495178e5996b9a0503613a7e>`_\ )
+* **config_spec:** workaround spurious whitespace issues on CentOS (\ `f4e12c5 <https://github.com/saltstack-formulas/dhcpd-formula/commit/f4e12c58b74d428421e80b77b2a1e92eb128b166>`_\ )
+
 `0.10.2 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.1...v0.10.2>`_ (2020-04-06)
 ----------------------------------------------------------------------------------------------------------
 
