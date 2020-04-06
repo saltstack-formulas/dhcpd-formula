@@ -1,4 +1,7 @@
-{% from "dhcpd/map.jinja" import dhcpd with context %}
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split('/')[0] %}
+
+{% from tplroot ~ "/map.jinja" import dhcpd with context %}
 
 include:
   - dhcpd
@@ -27,6 +30,8 @@ dhcpd.conf:
     - mode: 644
     - watch_in:
       - service: dhcpd
+    - context:
+        dhcpd: {{ dhcpd | json }}
 
 {% if dhcpd.service_config is defined %}
 
@@ -45,5 +50,7 @@ service_config:
     - mode: 644
     - watch_in:
       - service: dhcpd
+    - context:
+        dhcpd: {{ dhcpd | json }}
 
 {% endif %}

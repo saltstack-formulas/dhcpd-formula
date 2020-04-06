@@ -64,13 +64,13 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
     {%- if not loop.last %},{% else %};{% endif %}
   {%- endfor %}
 {%- endif %}
-{%- for option in customized.keys() %}
+{%- for option in  dhcpd.customized_options.keys() %}
   {%- if option in config %}
-    {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+    {%- if  dhcpd.customized_options[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
   option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
   {%- endif %}
 {%- endfor %}
-{%- for pool in salt['pillar.get']('dhcpd:subnets:{0}:pools'.format(subnet), []) %}
+{%- for pool in config.get( 'pools', [] ) %}
   pool {
     {%- if 'failover_peer' in pool %}
     failover peer "{{ pool['failover_peer'] }}";
@@ -88,7 +88,7 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
     {%- endif %}
   }
 {%- endfor %}
-{%- for host, config in salt['pillar.get']('dhcpd:subnets:{0}:hosts'.format(subnet), {}).items() %}
+{%- for host, config in config.get('hosts', {}).items() %}
   {%- filter indent(width=2) %}
 {% include 'dhcpd/files/host.jinja' with context %}
   {%- endfilter %}
