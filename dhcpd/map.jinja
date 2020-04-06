@@ -13,7 +13,7 @@
 {#- Retrieve the config dict only once #}
 {%- set _config = salt['config.get'](tplroot, default={}) %}
 
-{%- set config = salt['grains.filter_by'](
+{%- set defaults = salt['grains.filter_by'](
       default_settings,
       default=tplroot,
       merge=salt['grains.filter_by'](
@@ -36,6 +36,13 @@
           )
         )
       )
+    )
+%}
+
+{%- set config = salt['grains.filter_by'](
+      {'defaults': defaults},
+      default='defaults',
+      merge=_config
     )
 %}
 
