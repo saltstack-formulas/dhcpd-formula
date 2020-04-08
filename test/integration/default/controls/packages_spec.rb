@@ -1,14 +1,20 @@
-# Overide by OS
-case os[:family]
-when 'arch', 'redhat'
-  package_name = 'dhcp'
-when 'debian'
-  package_name = 'isc-dhcp-server'
-when 'freebsd'
-  package_name = 'isc-dhcp43-server'
-when 'suse'
-  package_name = 'dhcp-server'
-end
+# Overide by platform
+package_name =
+  case platform[:family]
+  when 'debian'
+    'isc-dhcp-server'
+  when 'redhat'
+    'dhcp'
+  when 'fedora', 'suse'
+    'dhcp-server'
+  when 'freebsd'
+    'isc-dhcp43-server'
+  when 'linux'
+    case platform[:name]
+    when 'arch'
+      'dhcp'
+    end
+  end
 
 control 'DHCPD package' do
   title 'should be installed'
