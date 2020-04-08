@@ -39,7 +39,7 @@ dhcpd:
 
   subnets:
     10.152.187.0:
-      comment: |
+      comment: |-
         No service will be given on this subnet, but declaring it helps the
         DHCP server to understand the network topology.
       netmask: 255.255.255.0
@@ -60,7 +60,7 @@ dhcpd:
         - rtr-239-0-2.example.org
 
     10.254.239.32:
-      comment: |
+      comment: |-
         This declaration allows BOOTP clients to get dynamic addresses,
         which we don't really recommend.
       netmask: 255.255.255.224
@@ -87,7 +87,7 @@ dhcpd:
       max_lease_time: 7200
       hosts:
         jake:
-          comment: |
+          comment: |-
             Hosts can be specified for subnets, taking subnets defaults
           hardware: ethernet 08:00:a7:26:c0:a9
           fixed_address: 10.5.5.27
@@ -96,7 +96,7 @@ dhcpd:
 
   hosts:
     passacaglia:
-      comment: |
+      comment: |-
         Hosts which require special configuration options can be listed in
         host statements.  If no address is specified, the address will be
         allocated dynamically (if possible), but the host-specific information
@@ -107,7 +107,7 @@ dhcpd:
       server_name: toccata.fugue.com
 
     fantasia:
-      comment: |
+      comment: |-
         Fixed IP addresses can also be specified for hosts.  These addresses
         should not also be listed as being available for dynamic assignment.
         Hosts for which fixed IP addresses have been specified can boot using
@@ -119,7 +119,7 @@ dhcpd:
       fixed_address: fantasia.fugue.com
 
     joe:
-      comment: |
+      comment: |-
         The hostname for a host can be passed in the DHCP response. Using the
         host_name key sets option host-name in the dhcpd configuration.
       hardware: ethernet 08:00:2b:4c:29:32
@@ -128,7 +128,7 @@ dhcpd:
 
   classes:
     foo:
-      comment: |
+      comment: |-
         You can declare a class of clients and then do address allocation
         based on that.  The example below shows a case where all clients
         in a certain class get addresses on the 10.17.224/24 subnet, and all
