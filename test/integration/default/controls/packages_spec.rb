@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Overide by platform
 package_name =
   case platform[:family]

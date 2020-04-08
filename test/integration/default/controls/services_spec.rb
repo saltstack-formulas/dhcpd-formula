@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Overide by platform
 service_name =
   case platform[:family]
