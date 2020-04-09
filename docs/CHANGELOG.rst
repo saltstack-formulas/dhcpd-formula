@@ -2,6 +2,29 @@
 Changelog
 =========
 
+`0.11.1 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.0...v0.11.1>`_ (2020-04-09)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **fedora:** install ``dhcp-server`` (\ `b91a3b1 <https://github.com/saltstack-formulas/dhcpd-formula/commit/b91a3b1feb1d5e524eed26c6e5be014f1bd33435>`_\ )
+* **pillar.example:** remove spurious whitespaces found in ``yaml_dump`` (\ `d578996 <https://github.com/saltstack-formulas/dhcpd-formula/commit/d57899643ea6be24b364bb5361034c120ee07ecd>`_\ )
+* **rubocop:** fix remaining violations (\ `106f9cb <https://github.com/saltstack-formulas/dhcpd-formula/commit/106f9cb36d8710b48c327541616347c7f94bea76>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen+travis:** adjust matrix to add ``3000.1`` & remove ``2017.7`` (\ `6bacfb3 <https://github.com/saltstack-formulas/dhcpd-formula/commit/6bacfb326610ab3afc399e7aaf3c109ef66dfd75>`_\ )
+
+Tests
+^^^^^
+
+
+* fix ``arch`` conditional and make ``case`` more Rubyish (\ `0b5bab2 <https://github.com/saltstack-formulas/dhcpd-formula/commit/0b5bab25c02c63506b9b3701aeff72b587c354ac>`_\ )
+
 `0.11.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.4...v0.11.0>`_ (2020-04-09)
 ----------------------------------------------------------------------------------------------------------
 
