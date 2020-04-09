@@ -2,6 +2,21 @@
 Changelog
 =========
 
+`0.11.0 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.4...v0.11.0>`_ (2020-04-09)
+----------------------------------------------------------------------------------------------------------
+
+Features
+^^^^^^^^
+
+
+* **ldap:** add ldap backend support (\ `241f267 <https://github.com/saltstack-formulas/dhcpd-formula/commit/241f2677631311991527381c87a10fb1926cf3c1>`_\ )
+
+Tests
+^^^^^
+
+
+* fix tests for PR 44 (\ `5128b1f <https://github.com/saltstack-formulas/dhcpd-formula/commit/5128b1ff45dc88e51ad7221cd0dbc03a817159fa>`_\ )
+
 `0.10.4 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.10.3...v0.10.4>`_ (2020-04-06)
 ----------------------------------------------------------------------------------------------------------
 
