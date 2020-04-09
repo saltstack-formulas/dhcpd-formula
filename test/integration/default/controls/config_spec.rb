@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Default values
 config_filename = '/etc/dhcp/dhcpd.conf'
 rootgroup = 'root'
@@ -204,10 +206,10 @@ control 'DHCPD service configuration' do
   title 'should be generated properly'
 
   only_if(
-    'the service configuration file is only available on the Debian, RedHat ' \
-    '& FreeBSD platform families'
+    'the service configuration file is only available on the Debian, RedHat, ' \
+    'Fedora & FreeBSD platform families'
   ) do
-    ['debian', 'redhat', 'freebsd'].include?(platform[:family])
+    %w[debian redhat fedora freebsd].include?(platform[:family])
   end
 
   describe file(service_config_filename) do

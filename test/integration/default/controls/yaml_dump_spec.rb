@@ -16,9 +16,7 @@ control 'DHCPD `map.jinja` YAML dump' do
 
           in a certain class get addresses on the 10.17.224/24 subnet, and all
 
-          other clients get addresses on the 10.0.29/24 subnet.
-
-    '
+          other clients get addresses on the 10.0.29/24 subnet.'
         match: if substring (option vendor-class-identifier, 0, 4) = "SUNW"
   COMMON
   common02 = <<~COMMON.chomp
@@ -61,17 +59,13 @@ control 'DHCPD `map.jinja` YAML dump' do
 
           to which a BOOTP client is connected which has the dynamic-bootp flag
 
-          set.
-
-    '
+          set.'
         hardware: ethernet 08:00:07:26:c0:a5
         fixed_address: fantasia.fugue.com
       joe:
         comment: 'The hostname for a host can be passed in the DHCP response. Using the
 
-          host_name key sets option host-name in the dhcpd configuration.
-
-    '
+          host_name key sets option host-name in the dhcpd configuration.'
         hardware: ethernet 08:00:2b:4c:29:32
         fixed_address: joe.fugue.com
         host_name: joe
@@ -82,9 +76,7 @@ control 'DHCPD `map.jinja` YAML dump' do
 
           allocated dynamically (if possible), but the host-specific information
 
-          will still come from the host declaration.
-
-    '
+          will still come from the host declaration.'
         hardware: ethernet 0:0:c0:5d:bd:95
         filename: vmunix.passacaglia
         server_name: toccata.fugue.com
@@ -146,9 +138,7 @@ control 'DHCPD `map.jinja` YAML dump' do
       10.152.187.0:
         comment: 'No service will be given on this subnet, but declaring it helps the
 
-          DHCP server to understand the network topology.
-
-    '
+          DHCP server to understand the network topology.'
         netmask: 255.255.255.0
         pools:
         - failover_peer: dhcp-failover
@@ -167,9 +157,7 @@ control 'DHCPD `map.jinja` YAML dump' do
       10.254.239.32:
         comment: 'This declaration allows BOOTP clients to get dynamic addresses,
 
-          which we don''t really recommend.
-
-    '
+          which we don''t really recommend.'
         netmask: 255.255.255.224
         dynamic_bootp: true
         range:
@@ -193,9 +181,7 @@ control 'DHCPD `map.jinja` YAML dump' do
         max_lease_time: 7200
         hosts:
           jake:
-            comment: 'Hosts can be specified for subnets, taking subnets defaults
-
-    '
+            comment: Hosts can be specified for subnets, taking subnets defaults
             hardware: ethernet 08:00:a7:26:c0:a9
             fixed_address: 10.5.5.27
     update_static_leases: false
@@ -223,7 +209,7 @@ control 'DHCPD `map.jinja` YAML dump' do
         service_config: /etc/default/isc-dhcp-server
         #{common06}
       YAML_DUMP
-    when 'redhat', 'fedora'
+    when 'redhat'
       <<~YAML_DUMP.chomp
         #{common01}
         config: #{config}
@@ -232,6 +218,20 @@ control 'DHCPD `map.jinja` YAML dump' do
         #{common03}
         #{common04}
         server: #{server}
+        #{common05}
+        service: #{service}
+        service_config: /etc/systemd/system/dhcpd.service.d/override.conf
+        #{common06}
+      YAML_DUMP
+    when 'fedora'
+      <<~YAML_DUMP.chomp
+        #{common01}
+        config: #{config}
+        #{common02}
+        enable: #{enable}
+        #{common03}
+        #{common04}
+        server: dhcp-server
         #{common05}
         service: #{service}
         service_config: /etc/systemd/system/dhcpd.service.d/override.conf
@@ -275,7 +275,7 @@ control 'DHCPD `map.jinja` YAML dump' do
           enable: #{enable}
           #{common03}
           #{common04}
-          server: dhcp
+          server: #{server}
           #{common05}
           service: dhcpd4
           #{common06}
