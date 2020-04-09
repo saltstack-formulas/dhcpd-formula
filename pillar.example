@@ -25,6 +25,18 @@ dhcpd:
   listen_interfaces:
     - em1
     - em2
+
+  ## LDAP Backend Configuration
+  ## When ldap backend configuration is used
+  ## all other configurations are ignored.
+  # ldap_server: localhost
+  # ldap_port: 389
+  # ldap_username: cn=dhcpadmin,dc=example,dc=com
+  # ldap_password: dhcppassword
+  # ldap_base_dn: ou=dhcp,dc=example,dc=com
+  # ldap_method: dynamic
+  # ldap_debug_file: /var/log/dhcp-ldap-startup.log
+
   subnets:
     10.152.187.0:
       comment: |
