@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.11.2](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.1...v0.11.2) (2020-09-24)
+
+
+### Bug Fixes
+
+* **dhcpd.conf:** fix bug 50 ([e015cda](https://github.com/saltstack-formulas/dhcpd-formula/commit/e015cdac5944cba0d821da31108ca26fe43a2da5)), closes [#50](https://github.com/saltstack-formulas/dhcpd-formula/issues/50)
+
+
+### Continuous Integration
+
+* **gemfile.lock:** add to repo with updated `Gemfile` [skip ci] ([e3d3bb3](https://github.com/saltstack-formulas/dhcpd-formula/commit/e3d3bb3b93f5686f3a32d411106de39d5b71fe9e))
+* **kitchen:** use `saltimages` Docker Hub where available [skip ci] ([6e5d4fe](https://github.com/saltstack-formulas/dhcpd-formula/commit/6e5d4fe5ff331fea4fe6b63bbfe0db71d01523f5))
+* **kitchen+travis:** add new platforms [skip ci] ([2e3f86e](https://github.com/saltstack-formulas/dhcpd-formula/commit/2e3f86ee12a0c1bab6c598f21109eaadc4ef790e))
+* **kitchen+travis:** adjust matrix to add `3000.2` & remove `2018.3` [skip ci] ([1eac3c9](https://github.com/saltstack-formulas/dhcpd-formula/commit/1eac3c9c4d8a352f0a8c2d9b68faeafae47acc71))
+* **kitchen+travis:** adjust matrix to add `3000.3` [skip ci] ([4fa9cb5](https://github.com/saltstack-formulas/dhcpd-formula/commit/4fa9cb54eeb4de109da50bf24766dca81a6cce23))
+* **kitchen+travis:** remove `master-py2-arch-base-latest` [skip ci] ([aa2f881](https://github.com/saltstack-formulas/dhcpd-formula/commit/aa2f8818fab95889e1365f331bb71468c212bf45))
+* **travis:** add notifications => zulip [skip ci] ([1726c5a](https://github.com/saltstack-formulas/dhcpd-formula/commit/1726c5a2c4a0ca2beb52b57795f6aa9cd8f3ca25))
+* **workflows/commitlint:** add to repo [skip ci] ([9572bd8](https://github.com/saltstack-formulas/dhcpd-formula/commit/9572bd82e3659354eca0d6061f1af566a2cbad23))
+
 ## [0.11.1](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.0...v0.11.1) (2020-04-09)
 
 
