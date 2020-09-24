@@ -81,6 +81,9 @@ control 'DHCPD configuration' do
         max-lease-time 7200;
 
         #use-host-decl-names off;
+        allow booting;
+        allow bootp;
+        deny unknown-clients;
 
         # LDAP Backend Configuration
 

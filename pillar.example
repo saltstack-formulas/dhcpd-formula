@@ -6,6 +6,10 @@ dhcpd:
   lookup:
     enable: false
 
+  allow:
+    - booting
+    - bootp
+  deny: unknown-clients
   domain_name: example.org
   domain_name_servers:
     - ns1.example.org

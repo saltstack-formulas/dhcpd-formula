@@ -5,7 +5,9 @@ control 'DHCPD `map.jinja` YAML dump' do
 
   arch = 'amd64'
   common01 = <<~COMMON.chomp
-    allow: []
+    allow:
+    - booting
+    - bootp
     arch: #{arch}
     authoritative: false
     classes:
@@ -27,7 +29,7 @@ control 'DHCPD `map.jinja` YAML dump' do
     ddns_domainname: ''
     ddns_update_style: ''
     default_lease_time: 600
-    deny: []
+    deny: unknown-clients
     domain_name: example.org
     domain_name_servers:
     - ns1.example.org
