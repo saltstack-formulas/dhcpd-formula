@@ -2,6 +2,27 @@
 Changelog
 =========
 
+`0.11.3 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.2...v0.11.3>`_ (2020-12-27)
+----------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **commitlint:** ensure ``upstream/master`` uses main repo URL [skip ci] (\ `8c22f0b <https://github.com/saltstack-formulas/dhcpd-formula/commit/8c22f0bea349fdfb5ab786b48c025d700f6e9ff8>`_\ )
+* **gitlab-ci:** add ``rubocop`` linter (with ``allow_failure``\ ) [skip ci] (\ `b7dcffa <https://github.com/saltstack-formulas/dhcpd-formula/commit/b7dcffabfc4f9393999f934d91cab94037c4c236>`_\ )
+* **gitlab-ci:** use GitLab CI as Travis CI replacement (\ `487fd0b <https://github.com/saltstack-formulas/dhcpd-formula/commit/487fd0b901f82e955fbb0554013420ad40713189>`_\ )
+* **pre-commit:** add to formula [skip ci] (\ `7814d97 <https://github.com/saltstack-formulas/dhcpd-formula/commit/7814d97b658d8fbb8096778f5c23a34681a120fd>`_\ )
+* **pre-commit:** enable/disable ``rstcheck`` as relevant [skip ci] (\ `1a76032 <https://github.com/saltstack-formulas/dhcpd-formula/commit/1a76032e5078e5211ea8ee7f5563b4af9735861f>`_\ )
+* **pre-commit:** finalise ``rstcheck`` configuration [skip ci] (\ `52c33c9 <https://github.com/saltstack-formulas/dhcpd-formula/commit/52c33c9047033ec0ccb9ccf01996b9a37c871e33>`_\ )
+
+Tests
+^^^^^
+
+
+* **_mapdata:** generate verification files (\ `2ffc825 <https://github.com/saltstack-formulas/dhcpd-formula/commit/2ffc825c1d2b267b81a876de3886d0ffb4e7a011>`_\ )
+* **map:** verify ``map.jinja`` dump using ``_mapdata`` state (\ `c8fbc79 <https://github.com/saltstack-formulas/dhcpd-formula/commit/c8fbc79ec2443ec45881ce81f0500702e8d27400>`_\ )
+
 `0.11.2 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.1...v0.11.2>`_ (2020-09-24)
 ----------------------------------------------------------------------------------------------------------
 
