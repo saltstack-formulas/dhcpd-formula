@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.4](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.3...v0.11.4) (2021-01-14)
+
+
+### Bug Fixes
+
+* **_mapdata:** ensure map data is directly under `values` ([81fb960](https://github.com/saltstack-formulas/dhcpd-formula/commit/81fb96012d75e2e19784451e90fa5dd0e5e9ad17))
+
+
+### Tests
+
+* **_mapdata:** update for `_mapdata/init.sls` change ([743de98](https://github.com/saltstack-formulas/dhcpd-formula/commit/743de98b2f38201e396552346eb139bf46407e8b))
+
 ## [0.11.3](https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.2...v0.11.3) (2020-12-27)
 
 
