@@ -3,7 +3,6 @@
 # Default values
 config_filename = '/etc/dhcp/dhcpd.conf'
 rootgroup = 'root'
-spurious_whitespace = ''
 # Overide by platform
 case platform[:family]
 when 'debian'
@@ -32,12 +31,6 @@ when 'redhat', 'fedora'
     ExecStart=
     ExecStart=/usr/sbin/dhcpd -f -cf /etc/dhcp/dhcpd.conf -user dhcpd -group dhcpd --no-pid em1 em2
   SERVICE_CONFIG_FILE
-  # Additionally, set the spurious whitespace for CentOS
-  # TODO: This needs to be fixed in the formula and then removed from here
-  case platform[:name]
-  when 'centos'
-    spurious_whitespace = '  '
-  end
 when 'suse'
   config_filename = '/etc/dhcpd.conf'
 when 'freebsd'
@@ -143,7 +136,7 @@ control 'DHCPD configuration' do
           default-lease-time 600;
           max-lease-time 7200;
           option routers 10.5.5.1;
-        #{spurious_whitespace}
+
           # Hosts can be specified for subnets, taking subnets defaults
           host jake {
             hardware ethernet 08:00:a7:26:c0:a9;
@@ -183,11 +176,11 @@ control 'DHCPD configuration' do
         }
 
         shared-network 224-29 {
-        #{spurious_whitespace}
+
           subnet 10.0.29.0 netmask 255.255.255.0 {
             option routers rtr-29.example.org;
           }
-        #{spurious_whitespace}
+
           subnet 10.17.224.0 netmask 255.255.255.0 {
             option routers rtr-224.example.org;
           }
