@@ -2,6 +2,44 @@
 Changelog
 =========
 
+`0.11.5 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.4...v0.11.5>`_ (2021-10-20)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **dhcpd.conf:** use peer_port for peer port (\ `809daac <https://github.com/saltstack-formulas/dhcpd-formula/commit/809daace338c32f000c64f6d02d12c730480eb3c>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **3003.1:** update inc. AlmaLinux, Rocky & ``rst-lint`` [skip ci] (\ `55fd4f6 <https://github.com/saltstack-formulas/dhcpd-formula/commit/55fd4f632070a8fbf64124ff9b6c749618f96ce9>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``inspec`` repo [skip ci] (\ `f9883c8 <https://github.com/saltstack-formulas/dhcpd-formula/commit/f9883c85132f406ac9c9ed3e85f9c5df10aae7d1>`_\ )
+* **kitchen:** move ``provisioner`` block & update ``run_command`` [skip ci] (\ `2668399 <https://github.com/saltstack-formulas/dhcpd-formula/commit/2668399df205988e8b3f89506918621aec4e7cfc>`_\ )
+* **kitchen+ci:** update with latest ``3003.2`` pre-salted images [skip ci] (\ `734c11b <https://github.com/saltstack-formulas/dhcpd-formula/commit/734c11b5b5011e92cec6aae7112dccfa59b2afb2>`_\ )
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] (\ `abc3335 <https://github.com/saltstack-formulas/dhcpd-formula/commit/abc333566773943f5a44e4bfe47b3429bee01033>`_\ )
+* add ``arch-master`` to matrix and update ``.travis.yml`` [skip ci] (\ `ce6274b <https://github.com/saltstack-formulas/dhcpd-formula/commit/ce6274be15cadec599b5a20754c4aa710bb58555>`_\ )
+* add Debian 11 Bullseye & update ``yamllint`` configuration [skip ci] (\ `49690fc <https://github.com/saltstack-formulas/dhcpd-formula/commit/49690fce8b7e14bab2f9289f707e4340e3d0a06a>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``kitchen-docker`` repo [skip ci] (\ `1f8fe87 <https://github.com/saltstack-formulas/dhcpd-formula/commit/1f8fe87c24f076382b6b6f7045b8e26ee61b1864>`_\ )
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] (\ `c72a78e <https://github.com/saltstack-formulas/dhcpd-formula/commit/c72a78e9c95d52280a2bcad8e8425812fb705189>`_\ )
+* **kitchen+gitlab:** adjust matrix to add ``3003`` [skip ci] (\ `23174d2 <https://github.com/saltstack-formulas/dhcpd-formula/commit/23174d29680206294cdb175af1850e2a2af65d17>`_\ )
+* **kitchen+gitlab:** remove Ubuntu 16.04 & Fedora 32 (EOL) [skip ci] (\ `3477749 <https://github.com/saltstack-formulas/dhcpd-formula/commit/34777493d51b87c2633de09912747a31039ac1ff>`_\ )
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] (\ `6eedf55 <https://github.com/saltstack-formulas/dhcpd-formula/commit/6eedf55bfbf857db9f6f3d189aa892d08e7c8ad0>`_\ )
+* **pre-commit:** update hook for ``rubocop`` [skip ci] (\ `b69b89b <https://github.com/saltstack-formulas/dhcpd-formula/commit/b69b89bd1ec08b6259417cdac97dcd2644afa2e5>`_\ )
+
+Tests
+^^^^^
+
+
+* **_mapdata:** add verification file for ``debian-11`` [skip ci] (\ `c8a1e21 <https://github.com/saltstack-formulas/dhcpd-formula/commit/c8a1e212938117a4f61407fe53def98233ae5131>`_\ )
+* **_mapdata:** add verification file for ``fedora-34`` [skip ci] (\ `c44e1ca <https://github.com/saltstack-formulas/dhcpd-formula/commit/c44e1ca27f30311c65f34e390dda3dc0d69b907d>`_\ )
+* standardise use of ``share`` suite & ``_mapdata`` state [skip ci] (\ `cf811ec <https://github.com/saltstack-formulas/dhcpd-formula/commit/cf811ec90ad81b694a0232afe47102c22f12fbb0>`_\ )
+* **_mapdata:** add verification files for new platforms (\ `9e494f4 <https://github.com/saltstack-formulas/dhcpd-formula/commit/9e494f4bf1d77d2a8a490c604c87f76da3e56c2b>`_\ )
+* **config_spec:** remove ``spurious_whitespace`` workaround for CentOS (\ `ed11b7a <https://github.com/saltstack-formulas/dhcpd-formula/commit/ed11b7a01e8f2144c941084eb69a3a6ad2d2da35>`_\ )
+* **share:** standardise with latest changes [skip ci] (\ `297dfe2 <https://github.com/saltstack-formulas/dhcpd-formula/commit/297dfe23f6f08e2999a14b16dfab162b2312d622>`_\ )
+
 `0.11.4 <https://github.com/saltstack-formulas/dhcpd-formula/compare/v0.11.3...v0.11.4>`_ (2021-01-14)
 ----------------------------------------------------------------------------------------------------------
 
