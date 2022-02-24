@@ -79,7 +79,9 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
     max-lease-time {{ pool.max_lease_time }};
     {%- endif %}
     {%- if 'range' in pool %}
-    range {{ pool.range[0] }} {{ pool.range[1] }};
+    {%- for range_def in pool.range %} 
+    range {{ range_def }};
+    {%- endfor %}
     {%- endif %}
     {%- if 'allow' in pool %}
     allow {{ pool.allow }};
