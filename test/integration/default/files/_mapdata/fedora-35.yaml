@@ -23,6 +23,7 @@ values:
       code: 252
       type: string
   ddns_domainname: ''
+  ddns_rev_domainname: ''
   ddns_update_style: ''
   default_lease_time: 600
   deny: unknown-clients
