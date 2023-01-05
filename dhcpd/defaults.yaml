@@ -35,6 +35,7 @@ dhcpd:
   ldap_tls_ciphers: ''
   ldap_tls_randfile: ''
   ddns_update_style: ''
+  ddns_rev_domainname: ''
   ddns_domainname: ''
   update_static_leases: false
   authoritative: false

@@ -41,6 +41,12 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
 {%- if 'domain_name' in config %}
   option domain-name "{{ config['domain_name'] }}";
 {%- endif %}
+{%- if 'ddns_rev_domainname' in config %}
+  ddns-rev-domainname "{{ config['ddns_rev_domainname'] }}";
+{%- endif %}
+{%- if 'ddns_domainname' in config %}
+  ddns-domainname "{{ config['ddns_domainname'] }}";
+{%- endif %}
 {%- if 'domain_search' in config %}
   option domain-search "{{ config['domain_search']|join('","') }}";
 {%- endif %}
