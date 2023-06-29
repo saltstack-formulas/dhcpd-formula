@@ -25,6 +25,9 @@ host {{ host }} {
   {%- if 'hardware' in config %}
   hardware {{ config.hardware }};
   {%- endif %}
+  {%- if 'ddns_hostname' in config %}
+  ddns-hostname "{{ config.ddns_hostname }}";
+  {%- endif %}
   {%- if 'fixed_address' in config %}
   fixed-address {{ config.fixed_address }};
   {%- endif %}
@@ -40,9 +43,9 @@ host {{ host }} {
   {%- if 'host_name' in config %}
   option host-name "{{ config.host_name }}";
   {%- endif %}
-  {%- for option in customized.keys() %}
+  {%- for option in  dhcpd.customized_options.keys() %}
     {%- if option in config %}
-     {%- if customized[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
+     {%- if  dhcpd.customized_options[option]['type'] in types_to_quote %} {% set quote = dquote %} {%- endif %}
   option {{ option|replace('_', '-') }} {{ quote }}{{ config.get(option) }}{{ quote }};
     {%- endif %}
   {%- endfor %}

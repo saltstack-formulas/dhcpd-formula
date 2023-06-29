@@ -1,7 +1,7 @@
 name: dhcpd
 os: Debian, Ubuntu, Raspbian, RedHat, CentOS, Arch, FreeBSD
 os_family: Debian, RedHat, Arch, FreeBSD
-version: 0.8.0
+version: 0.11.5
 release: 1
 minimum_version: 2016.11
 summary: DHCPD formula

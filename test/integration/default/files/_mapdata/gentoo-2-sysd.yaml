@@ -1,0 +1,187 @@
+# yamllint disable rule:indentation rule:line-length
+# Gentoo-2
+---
+values:
+  allow:
+  - booting
+  - bootp
+  arch: amd64
+  authoritative: false
+  classes:
+    foo:
+      comment: 'You can declare a class of clients and then do address allocation
+
+        based on that.  The example below shows a case where all clients
+
+        in a certain class get addresses on the 10.17.224/24 subnet, and all
+
+        other clients get addresses on the 10.0.29/24 subnet.'
+      match: if substring (option vendor-class-identifier, 0, 4) = "SUNW"
+  config: /etc/dhcp/dhcpd.conf
+  customized_options:
+    auto_proxy_config:
+      code: 252
+      type: string
+  ddns_domainname: ''
+  ddns_rev_domainname: ''
+  ddns_update_style: ''
+  default_lease_time: 600
+  deny: unknown-clients
+  domain_name: example.org
+  domain_name_servers:
+  - ns1.example.org
+  - ns2.example.org
+  domain_search: []
+  enable: false
+  failover_peers:
+    dhcp-failover:
+      address: 10.152.187.5
+      mclt: 3600
+      peer_address: 10.152.187.6
+      peer_port: 647
+      port: 647
+      primary: true
+      split: 128
+  get_lease_hostnames: ''
+  hosts:
+    fantasia:
+      comment: 'Fixed IP addresses can also be specified for hosts.  These addresses
+
+        should not also be listed as being available for dynamic assignment.
+
+        Hosts for which fixed IP addresses have been specified can boot using
+
+        BOOTP or DHCP.  Hosts for which no fixed address is specified can only
+
+        be booted with DHCP, unless there is an address range on the subnet
+
+        to which a BOOTP client is connected which has the dynamic-bootp flag
+
+        set.'
+      fixed_address: fantasia.fugue.com
+      hardware: ethernet 08:00:07:26:c0:a5
+    joe:
+      comment: 'The hostname for a host can be passed in the DHCP response. Using
+        the
+
+        host_name key sets option host-name in the dhcpd configuration.'
+      fixed_address: joe.fugue.com
+      hardware: ethernet 08:00:2b:4c:29:32
+      host_name: joe
+    passacaglia:
+      comment: 'Hosts which require special configuration options can be listed
+        in
+
+        host statements.  If no address is specified, the address will be
+
+        allocated dynamically (if possible), but the host-specific information
+
+        will still come from the host declaration.'
+      filename: vmunix.passacaglia
+      hardware: ethernet 0:0:c0:5d:bd:95
+      server_name: toccata.fugue.com
+  keys: {}
+  ldap_base_dn: ''
+  ldap_debug_file: ''
+  ldap_init_retry: 0
+  ldap_method: ''
+  ldap_password: ''
+  ldap_port: ''
+  ldap_server: ''
+  ldap_ssl: ''
+  ldap_tls_ca_dir: ''
+  ldap_tls_ca_file: ''
+  ldap_tls_cert: ''
+  ldap_tls_ciphers: ''
+  ldap_tls_crlcheck: ''
+  ldap_tls_key: ''
+  ldap_tls_randfile: ''
+  ldap_tls_reqcert: ''
+  ldap_username: ''
+  listen_interfaces:
+  - em1
+  - em2
+  log_facility: local7
+  lookup:
+    enable: false
+  max_lease_time: 7200
+  one_lease_per_client: ''
+  routers: []
+  server: net-misc/dhcp
+  server_identifier: ''
+  server_name: ''
+  service: dhcpd
+  service_config: /etc/conf.d/dhcpd
+  shared_networks:
+    224-29:
+      pools:
+      - allow: members of "foo"
+        range:
+        - 10.17.224.10
+        - 10.17.224.250
+      - deny: members of "foo"
+        range:
+        - 10.0.29.10
+        - 10.0.29.230
+      subnets:
+        10.0.29.0:
+          netmask: 255.255.255.0
+          routers: rtr-29.example.org
+        10.17.224.0:
+          netmask: 255.255.255.0
+          routers: rtr-224.example.org
+  subnet_mask: ''
+  subnets:
+    10.152.187.0:
+      comment: 'No service will be given on this subnet, but declaring it helps
+        the
+
+        DHCP server to understand the network topology.'
+      netmask: 255.255.255.0
+      pools:
+      - failover_peer: dhcp-failover
+        range:
+        - 10.152.187.1
+        - 10.152.187.254
+    10.254.239.0:
+      comment: This is a very basic subnet declaration.
+      netmask: 255.255.255.224
+      range:
+      - 10.254.239.10
+      - 10.254.239.20
+      routers:
+      - rtr-239-0-1.example.org
+      - rtr-239-0-2.example.org
+    10.254.239.32:
+      broadcast_address: 10.254.239.31
+      comment: 'This declaration allows BOOTP clients to get dynamic addresses,
+
+        which we don''t really recommend.'
+      dynamic_bootp: true
+      netmask: 255.255.255.224
+      range:
+      - 10.254.239.40
+      - 10.254.239.60
+      routers: rtr-239-32-1.example.org
+    10.5.5.0:
+      broadcast_address: 10.5.5.31
+      comment: A slightly different configuration for an internal subnet.
+      default_lease_time: 600
+      domain_name: internal.example.org
+      domain_name_servers:
+      - ns1.internal.example.org
+      hosts:
+        jake:
+          comment: Hosts can be specified for subnets, taking subnets defaults
+          fixed_address: 10.5.5.27
+          hardware: ethernet 08:00:a7:26:c0:a9
+      max_lease_time: 7200
+      netmask: 255.255.255.224
+      range:
+      - 10.5.5.26
+      - 10.5.5.30
+      routers:
+      - 10.5.5.1
+  update_static_leases: false
+  use_host_decl_names: false
+  zones: {}

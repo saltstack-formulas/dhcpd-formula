@@ -1,29 +1,49 @@
-{% set dhcpd = salt['grains.filter_by']({
-    'Arch': {
-        'server': 'dhcp',
-        'service': 'dhcpd4',
-        'config': '/etc/dhcpd.conf',
-    },
-    'Debian': {
-        'server': 'isc-dhcp-server',
-        'service': 'isc-dhcp-server',
-        'config': '/etc/dhcp/dhcpd.conf',
-        'service_config': '/etc/default/isc-dhcp-server',
-    },
-    'RedHat': {
-        'server': 'dhcp',
-        'service': 'dhcpd',
-        'config': '/etc/dhcp/dhcpd.conf',
-    },
-    'FreeBSD': {
-        'server': 'isc-dhcp43-server',
-        'service': 'isc-dhcpd',
-        'config': '/usr/local/etc/dhcpd.conf',
-        'service_config': '/etc/rc.conf.d/dhcpd',
-    },
-    'Suse': {
-        'server': 'dhcp-server',
-        'service': 'dhcpd',
-        'config': '/etc/dhcpd.conf',
-    },
-}, merge=salt['pillar.get']('dhcpd:lookup')) %}
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split('/')[0] %}
+{#- Start imports as #}
+{%- import_yaml tplroot ~ "/defaults.yaml" as default_settings %}
+{%- import_yaml tplroot ~ "/osarchmap.yaml" as osarchmap %}
+{%- import_yaml tplroot ~ "/osfamilymap.yaml" as osfamilymap %}
+{%- import_yaml tplroot ~ "/osmap.yaml" as osmap %}
+{%- import_yaml tplroot ~ "/osfingermap.yaml" as osfingermap %}
+
+{#- Retrieve the config dict only once #}
+{%- set _config = salt['config.get'](tplroot, default={}) %}
+
+{%- set defaults = salt['grains.filter_by'](
+      default_settings,
+      default=tplroot,
+      merge=salt['grains.filter_by'](
+        osarchmap,
+        grain='osarch',
+        merge=salt['grains.filter_by'](
+          osfamilymap,
+          grain='os_family',
+          merge=salt['grains.filter_by'](
+            osmap,
+            grain='os',
+            merge=salt['grains.filter_by'](
+              osfingermap,
+              grain='osfinger',
+              merge=salt['grains.filter_by'](
+                _config,
+                default='lookup'
+              )
+            )
+          )
+        )
+      )
+    )
+%}
+
+{%- set config = salt['grains.filter_by'](
+      {'defaults': defaults},
+      default='defaults',
+      merge=_config
+    )
+%}
+
+{%- set dhcpd = config %}

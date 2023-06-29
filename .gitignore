@@ -91,6 +91,9 @@ celerybeat-schedule
 venv/
 ENV/
 
+# visual studio
+.vs/
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -105,7 +108,7 @@ ENV/
 .mypy_cache/
 
 # Bundler
-Gemfile.lock
+.bundle/
 
 # copied `.md` files used for conversion to `.rst` using `m2r`
 docs/*.md
@@ -120,3 +123,12 @@ docs/*.md
 Dockerfile.*_*
 ignore/
 tmp/
+
+# `salt-formula` -- Vagrant Specific files
+.vagrant
+top.sls
+!test/salt/pillar/top.sls
+
+# `suricata-formula` -- Platform binaries
+*.rpm
+*.deb

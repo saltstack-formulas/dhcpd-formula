@@ -1,18 +1,24 @@
-# Overide by OS
-case os[:family]
-when 'arch'
-  service_name = 'dhcpd4'
-when 'debian'
-  service_name = 'isc-dhcp-server'
-when 'freebsd'
-  service_name = 'isc-dhcpd'
-when 'redhat', 'suse'
-  service_name = 'dhcpd'
-end
+# frozen_string_literal: true
+
+# Overide by platform
+service_name =
+  case platform[:family]
+  when 'debian'
+    'isc-dhcp-server'
+  when 'redhat', 'fedora', 'suse'
+    'dhcpd'
+  when 'freebsd'
+    'isc-dhcpd'
+  when 'linux'
+    case platform[:name]
+    when 'arch'
+      'dhcpd4'
+    end
+  end
 
 control 'DHCPD service' do
   impact 0.5
-  title 'should be running and enabled'
+  title 'should be installed but not enabled or running'
 
   describe service(service_name) do
     it { should be_installed }
