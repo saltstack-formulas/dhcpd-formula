@@ -25,6 +25,9 @@ host {{ host }} {
   {%- if 'hardware' in config %}
   hardware {{ config.hardware }};
   {%- endif %}
+  {%- if 'ddns_hostname' in config %}
+  ddns-hostname "{{ config.ddns_hostname }}";
+  {%- endif %}
   {%- if 'fixed_address' in config %}
   fixed-address {{ config.fixed_address }};
   {%- endif %}
