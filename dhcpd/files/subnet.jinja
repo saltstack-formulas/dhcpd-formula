@@ -97,12 +97,6 @@ subnet {{ subnet }} netmask {{ config.netmask }} {
     {%- endif %}
   }
 {%- endfor %}
-{%- if 'ddns_domainname' in config %}
-  ddns-domainname {{ dquote }}{{ config['ddns_domainname'] }}{{ dquote }};
-{%- endif %}
-{%- if 'ddns_rev_domainname' in config %}
-  ddns-rev-domainname {{ dquote }}{{ config['ddns_rev_domainname'] }}{{ dquote }};
-{%- endif %}
 {%- for host, config in config.get('hosts', {}).items() %}
   {%- filter indent(width=2) %}
 {% include 'dhcpd/files/host.jinja' with context %}
