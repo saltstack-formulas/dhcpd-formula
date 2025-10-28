@@ -170,3 +170,9 @@ dhcpd:
     auto_proxy_config:
       code: 252
       type: string
+    # set namespace for an ipxe option 
+    ipxe:
+      type: space
+    ipxe.no-pxedhcp:
+      code: 176
+      type: unsigned integer 8
